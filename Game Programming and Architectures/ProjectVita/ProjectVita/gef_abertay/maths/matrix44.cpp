@@ -40,7 +40,7 @@ namespace gef
 
 	void Matrix44::LookAt(const Vector4& eye, const Vector4& lookat, const Vector4& up)
 	{
-		SetIdentity();
+		//SetIdentity();
 		Vector4 forward = eye - lookat;
 		forward.Normalise();
 
@@ -152,60 +152,60 @@ namespace gef
 
 	void Matrix44::RotationX(float _radiansRot)
 	{
-		values_[0].set_x(1.0f);
+		/*values_[0].set_x(1.0f);
 		values_[0].set_y(0.0f);
 		values_[0].set_z(0.0f);
 		values_[0].set_w(0.0f);
 
-		values_[1].set_x(0.0f);
+		values_[1].set_x(0.0f);*/
 		values_[1].set_y(cosf(_radiansRot));
 		values_[1].set_z(sinf(_radiansRot));
-		values_[1].set_w(0.0f);
+		/*values_[1].set_w(0.0f);
 
-		values_[2].set_x(0.0f);
+		values_[2].set_x(0.0f);*/
 		values_[2].set_y(-sinf(_radiansRot));
 		values_[2].set_z(cosf(_radiansRot));
-		values_[2].set_w(0.0f);
+		/*values_[2].set_w(0.0f);
 
 		values_[3].set_x(0.0f);
 		values_[3].set_y(0.0f);
 		values_[3].set_z(0.0f);
-		values_[3].set_w(1.0f);
+		values_[3].set_w(1.0f);*/
 	}
 
 	void Matrix44::RotationY(float _radiansRot)
 	{
 		values_[0].set_x(cosf(_radiansRot));
-		values_[0].set_y(0.0f);
+		//values_[0].set_y(0.0f);
 		values_[0].set_z(-sinf(_radiansRot));
-		values_[0].set_w(0.0f);
+		//values_[0].set_w(0.0f);
 
-		values_[1].set_x(0.0f);
+		/*values_[1].set_x(0.0f);
 		values_[1].set_y(1.0f);
 		values_[1].set_z(0.0f);
-		values_[1].set_w(0.0f);
+		values_[1].set_w(0.0f);*/
 
 		values_[2].set_x(sinf(_radiansRot));
-		values_[2].set_y(0.0f);
+		//values_[2].set_y(0.0f);
 		values_[2].set_z(cosf(_radiansRot));
-		values_[2].set_w(0.0f);
+		//values_[2].set_w(0.0f);
 
-		values_[3].set_x(0.0f);
+		/*values_[3].set_x(0.0f);
 		values_[3].set_y(0.0f);
 		values_[3].set_z(0.0f);
-		values_[3].set_w(1.0f);
+		values_[3].set_w(1.0f);*/
 	}
 
 	void Matrix44::RotationZ(float _radiansRot)
 	{
 		values_[0].set_x(cosf(_radiansRot));
 		values_[0].set_y(sinf(_radiansRot));
-		values_[0].set_z(0.0f);
-		values_[0].set_w(0.0f);
+		/*values_[0].set_z(0.0f);
+		values_[0].set_w(0.0f);*/
 
 		values_[1].set_x(-sinf(_radiansRot));
 		values_[1].set_y(cosf(_radiansRot));
-		values_[1].set_z(0.0f);
+		/*values_[1].set_z(0.0f);
 		values_[1].set_w(0.0f);
 
 		values_[2].set_x(0.0f);
@@ -216,7 +216,7 @@ namespace gef
 		values_[3].set_x(0.0f);
 		values_[3].set_y(0.0f);
 		values_[3].set_z(0.0f);
-		values_[3].set_w(1.0f);
+		values_[3].set_w(1.0f);*/
 	}
 
 	void Matrix44::Rotation(const class Quaternion& quat)
@@ -257,7 +257,7 @@ namespace gef
 
 	void Matrix44::Scale(const Vector4& scale)
 	{
-		SetIdentity();
+		//SetIdentity();
 		values_[0].set_x(scale.x());
 		values_[1].set_y(scale.y());
 		values_[2].set_z(scale.z());

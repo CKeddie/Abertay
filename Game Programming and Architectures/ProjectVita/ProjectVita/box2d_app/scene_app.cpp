@@ -5,19 +5,26 @@
 #include <system/debug_log.h>
 #include <graphics/renderer_3d.h>
 #include <maths/math_utils.h>
+#include <assets/obj_loader.h>
+#include <graphics/model.h>
+
+Camera camera_(gef::Vector4(0,0,5));
 
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
-	font_(NULL)
+	font_(NULL),
+	input_manager(NULL)
 {
+	
 }
 
 void SceneApp::Init()
 {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
+	input_manager = gef::InputManager::Create(platform_);
 
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
@@ -50,10 +57,17 @@ bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
+	if (!input_manager)
+		return true;
+
+	input_manager->Update();
+	Keyboard* kb = input_manager->keyboard();
+
 	gef::Matrix44 player_transform;
 	player_transform.SetIdentity();
-	player_.set_transform(player_transform);
-
+	player_.set_transform(player_transform);	
+	camera_.Input(kb, frame_time);
+	camera_.Update(fps_);
 	return true;
 }
 
@@ -62,20 +76,9 @@ void SceneApp::Render()
 	// setup camera
 
 	// projection
-	float fov = gef::DegToRad(45.0f);
-	float aspect_ratio = (float)platform_.width() / (float)platform_.height();
-	gef::Matrix44 projection_matrix;
-	projection_matrix = platform_.PerspectiveProjectionFov(fov, aspect_ratio, 0.1f, 100.0f);
-	renderer_3d_->set_projection_matrix(projection_matrix);
-
+		
 	// view
-	gef::Vector4 camera_eye(-2.0f, 2.0f, 5.0f);
-	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
-	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
-	gef::Matrix44 view_matrix;
-	view_matrix.LookAt(camera_eye, camera_lookat, camera_up);
-	renderer_3d_->set_view_matrix(view_matrix);
-
+	camera_.Render(renderer_3d_, platform_);
 
 	// draw 3d geometry
 	renderer_3d_->Begin();
