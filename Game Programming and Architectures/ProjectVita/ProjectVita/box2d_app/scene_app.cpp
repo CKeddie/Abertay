@@ -5,20 +5,26 @@
 #include <system/debug_log.h>
 #include <graphics/renderer_3d.h>
 #include <maths/math_utils.h>
+#include <assets/obj_loader.h>
+#include <graphics/model.h>
+
+Camera camera_(gef::Vector4(0,0,5));
+gef::MeshInstance mInst;
 
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
 	sprite_renderer_(NULL),
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
-	font_(NULL)
+	font_(NULL),
+	input_manager(NULL)
 {
 }
 
 void SceneApp::Init()
 {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
-
+	input_manager = gef::InputManager::Create(platform_);
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
 
@@ -27,7 +33,24 @@ void SceneApp::Init()
 
 	// setup the mesh for the player
 	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+	
+	gef::ImageData data;
 
+	png_loader_->Load("textures/hydra.png", platform_, data);
+	
+	sprite_.set_texture(Texture::Create(platform_, data));
+	sprite_.set_position(50, 50, 100);
+	sprite_.set_width(data.width());
+	sprite_.set_height(data.height());
+
+	
+	//if (obj_loader_->Load("models/wolf/wolf.obj", platform_, starship_))
+	//{
+	//	if (starship_.mesh())
+	//	{			
+	//		player_.set_mesh(starship_.mesh());
+	//	}
+	//}
 	InitFont();
 	SetupLights();
 }
@@ -50,36 +73,31 @@ bool SceneApp::Update(float frame_time)
 {
 	fps_ = 1.0f / frame_time;
 
+	if (!input_manager)
+		return true;
+
+	input_manager->Update();
+	Keyboard* kb = input_manager->keyboard();
+	if (kb->IsKeyPressed(gef::Keyboard::KC_ESCAPE))
+		return false;
+
 	gef::Matrix44 player_transform;
 	player_transform.SetIdentity();
-	player_.set_transform(player_transform);
+	player_transform.Scale(Vector4(1, 1, 1));
+	player_.set_transform(player_transform);	
 
+	camera_.Input(kb, frame_time);
+	camera_.Update(fps_);
 	return true;
 }
 
 void SceneApp::Render()
 {
-	// setup camera
-
-	// projection
-	float fov = gef::DegToRad(45.0f);
-	float aspect_ratio = (float)platform_.width() / (float)platform_.height();
-	gef::Matrix44 projection_matrix;
-	projection_matrix = platform_.PerspectiveProjectionFov(fov, aspect_ratio, 0.1f, 100.0f);
-	renderer_3d_->set_projection_matrix(projection_matrix);
-
-	// view
-	gef::Vector4 camera_eye(-2.0f, 2.0f, 5.0f);
-	gef::Vector4 camera_lookat(0.0f, 0.0f, 0.0f);
-	gef::Vector4 camera_up(0.0f, 1.0f, 0.0f);
-	gef::Matrix44 view_matrix;
-	view_matrix.LookAt(camera_eye, camera_lookat, camera_up);
-	renderer_3d_->set_view_matrix(view_matrix);
-
+	camera_.Render(renderer_3d_, platform_);
 
 	// draw 3d geometry
 	renderer_3d_->Begin();
-
+	
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
 	renderer_3d_->DrawMesh(player_);
 	renderer_3d_->set_override_material(NULL);
@@ -88,9 +106,11 @@ void SceneApp::Render()
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
+	sprite_renderer_->DrawSprite(sprite_);
 	DrawHUD();
 	sprite_renderer_->End();
 }
+
 void SceneApp::InitFont()
 {
 	font_ = new gef::Font(platform_);
@@ -101,6 +121,7 @@ void SceneApp::CleanUpFont()
 {
 	delete font_;
 	font_ = NULL;
+	
 }
 
 void SceneApp::DrawHUD()
@@ -109,6 +130,7 @@ void SceneApp::DrawHUD()
 	{
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
+		//font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Camera Position: %",);
 	}
 }
 

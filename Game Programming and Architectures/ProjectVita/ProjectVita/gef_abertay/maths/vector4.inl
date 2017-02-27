@@ -1,3 +1,4 @@
+#include "vector4.h"
 namespace gef
 {
 
@@ -35,6 +36,12 @@ namespace gef
 	inline const Vector4 Vector4::operator+(const Vector4& _vec) const
 	{
 		return Vector4(values_[0] + _vec.x(), values_[1] + _vec.y(), values_[2] + _vec.z());
+	}
+
+	inline const bool Vector4::operator==(const Vector4 & _vec) const
+	{
+		return values_[0] == _vec.x() && values_[1] == _vec.y() && values_[2] == _vec.z() && values_[3] == _vec.w();
+		
 	}
 
 	inline Vector4& Vector4::operator+=(const Vector4& _vec)
