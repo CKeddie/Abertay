@@ -19,6 +19,6 @@ public:
 	void SetTurnSpeed(Vector4 turnSpeed) { _turnSpeed = turnSpeed; }
 
 private:
-	Vector4 _moveSpeed = Vector4(1, 1, 1), _turnSpeed = Vector4(1, 1, 1);
+	Vector4 _moveSpeed = Vector4(10, 10, 10), _turnSpeed = Vector4(1, 1, 1);
 };
 

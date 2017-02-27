@@ -248,15 +248,15 @@ bool OBJLoader::Load(const char* filename, Platform& platform, Model& model)
 
 			mesh->GetPrimitive(primitive_num)->set_type(gef::TRIANGLE_LIST);
 			mesh->GetPrimitive(primitive_num)->InitIndexBuffer(platform, indices[primitive_num], index_count, sizeof(UInt32));
-//			mesh->GetPrimitive(primitive_num)->InitIndexBuffer(platform, indices[primitive_num], 3, sizeof(UInt32));
+			//mesh->GetPrimitive(primitive_num)->InitIndexBuffer(platform, indices[primitive_num], 3, sizeof(UInt32));
 
-
+//----------//BUG: HERE SOMEWHERE
 			Int32 texture_index = texture_indices[primitive_num];
-			if(texture_index == -1)
+			if(texture_index == 0)
 				mesh->GetPrimitive(primitive_num)->set_material(NULL);
 			else
 				mesh->GetPrimitive(primitive_num)->set_material(model.material(texture_index));
-			//mesh->GetPrimitive(primitive_num)->set_texture(textures_[0]);
+				//mesh->GetPrimitive(primitive_num)->set_material(textures_[0]);
 		}
 
 		// mesh construction complete

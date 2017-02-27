@@ -235,14 +235,18 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ControlManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="UIControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\primitive_builder.h" />
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ControlManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="UIControl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
