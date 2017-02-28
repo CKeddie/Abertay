@@ -30,13 +30,16 @@ void GameObject::Update(float deltaTime)
 
 	for (int i = 0; i < _components.size(); i++)
 	{
-		_components[i].Update();
+		_components[i].Update(deltaTime);
 	}
 }
 
 void GameObject::Render(Renderer3D * renderer)
 {
-	
+	for (int i = 0; i < _components.size(); i++)
+	{
+		_components[i].Render(renderer);
+	}
 }
 
 void GameObject::Rotate(Vector4 axis, float amount)

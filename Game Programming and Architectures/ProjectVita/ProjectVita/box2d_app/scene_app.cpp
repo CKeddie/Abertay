@@ -17,8 +17,10 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	renderer_3d_(NULL),
 	primitive_builder_(NULL),
 	font_(NULL),
-	input_manager(NULL)
+	input_manager(NULL),
+	control_manager(font_)
 {
+
 }
 
 void SceneApp::Init()
@@ -37,22 +39,25 @@ void SceneApp::Init()
 	gef::ImageData data;
 
 	png_loader_->Load("textures/hydra.png", platform_, data);
-	
+
 	sprite_.set_texture(Texture::Create(platform_, data));
 	sprite_.set_position(50, 50, 100);
 	sprite_.set_width(data.width());
 	sprite_.set_height(data.height());
-
-	
-	//if (obj_loader_->Load("models/wolf/wolf.obj", platform_, starship_))
-	//{
-	//	if (starship_.mesh())
-	//	{			
-	//		player_.set_mesh(starship_.mesh());
-	//	}
-	//}
+		
 	InitFont();
 	SetupLights();
+
+	control_manager.SetFont(font_);
+
+	//UI Setup
+	button_ = new Button(sprite_, "Button1", Vector4(platform_.width() / 2, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	control_manager.AddControl(button_);
+	button_ = new Button(sprite_, "Button2", Vector4(platform_.width() / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	control_manager.AddControl(button_);
+	button_ = new Button(sprite_, "Button3", Vector4((platform_.width() * 2) / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	control_manager.AddControl(button_);
+
 }
 
 void SceneApp::CleanUp()
@@ -77,6 +82,8 @@ bool SceneApp::Update(float frame_time)
 		return true;
 
 	input_manager->Update();
+	control_manager.Update(frame_time, input_manager);
+
 	Keyboard* kb = input_manager->keyboard();
 	if (kb->IsKeyPressed(gef::Keyboard::KC_ESCAPE))
 		return false;
@@ -106,7 +113,8 @@ void SceneApp::Render()
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
-	sprite_renderer_->DrawSprite(sprite_);
+	control_manager.Draw(sprite_renderer_);
+	//sprite_renderer_->DrawSprite(sprite_);
 	DrawHUD();
 	sprite_renderer_->End();
 }
