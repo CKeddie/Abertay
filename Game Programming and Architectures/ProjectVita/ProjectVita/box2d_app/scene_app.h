@@ -20,9 +20,11 @@
 #include "input\input_manager.h"
 #include "input\keyboard.h"
 
+
 #include "Camera.h"
 #include "GameObject.h"
-
+#include "ControlManager.h"
+#include "Button.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -57,11 +59,16 @@ private:
 	gef::Keyboard* keyboard_;
 	gef::PNGLoader* png_loader_ = new gef::PNGLoader();
 
+	ControlManager control_manager;
+
 	PrimitiveBuilder* primitive_builder_;
 
 	gef::MeshInstance player_;
 	gef::Model starship_;
 	gef::Sprite sprite_;
+	
+
+	Button* button_;
 
 	float fps_;
 };

@@ -13,26 +13,47 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\GameObject">
-      <UniqueIdentifier>{0f2cbf29-a4b8-4803-a206-151616bf8fbd}</UniqueIdentifier>
+    <Filter Include="Header Files\GameCode">
+      <UniqueIdentifier>{32047d67-d62e-4067-9f18-3814e2d77a66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObject">
-      <UniqueIdentifier>{93cf9cbb-9a2d-4de6-8526-1dd4e337f63e}</UniqueIdentifier>
+    <Filter Include="Header Files\EngineCode">
+      <UniqueIdentifier>{90951f06-b3cc-4cdf-a37e-4e424690f862}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObjectComponent">
+    <Filter Include="Header Files\EngineCode\GameObjectComponent">
       <UniqueIdentifier>{ba58ca79-4810-4295-8181-6f4296631ed2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObjectComponents">
-      <UniqueIdentifier>{cf05f0f5-7045-47d9-979c-22784e4b0943}</UniqueIdentifier>
+    <Filter Include="Header Files\EngineCode\GameObject">
+      <UniqueIdentifier>{93cf9cbb-9a2d-4de6-8526-1dd4e337f63e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObject\Graphics">
+    <Filter Include="Header Files\EngineCode\GameObject\Graphics">
       <UniqueIdentifier>{7ff473c3-69af-4f3e-b53a-b614deead8f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\UserInterface">
+    <Filter Include="Header Files\EngineCode\SceneManager">
+      <UniqueIdentifier>{3d731e05-8b96-4707-8988-fc6e2f0b85e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EngineCode\UserInterface">
       <UniqueIdentifier>{2907219c-76ba-4364-abd7-4c3b9f74210d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\UserInterface">
+    <Filter Include="Source Files\EngineCode">
+      <UniqueIdentifier>{1761ff7d-ffb6-4e29-9822-cbe05cc2c9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EngineCode\GameObjectComponents">
+      <UniqueIdentifier>{cf05f0f5-7045-47d9-979c-22784e4b0943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EngineCode\GameObject">
+      <UniqueIdentifier>{0f2cbf29-a4b8-4803-a206-151616bf8fbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EngineCode\GameObject\Graphics">
+      <UniqueIdentifier>{84b7d1f7-61c5-4615-9fed-7cfd814f1863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EngineCode\SceneManager">
+      <UniqueIdentifier>{d9271217-cf08-4184-a35e-86efb0fd5313}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EngineCode\UserInterface">
       <UniqueIdentifier>{77f88d2a-5b21-496e-9b27-42325f06c271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameCode">
+      <UniqueIdentifier>{dab7e77d-25bd-4d88-9ac9-7de60ca9729e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -49,19 +70,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\EngineCode\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files\GameObjectComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
     </ClCompile>
     <ClCompile Include="UIControl.cpp">
-      <Filter>Source Files\UserInterface</Filter>
+      <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
     <ClCompile Include="ControlManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\EngineCode\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\EngineCode\GameObject\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\EngineCode\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,19 +99,25 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObject</Filter>
+      <Filter>Header Files\EngineCode\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Header Files\GameObjectComponent</Filter>
+      <Filter>Header Files\EngineCode\GameObjectComponent</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files\GameObject\Graphics</Filter>
+      <Filter>Header Files\EngineCode\GameObject\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="UIControl.h">
-      <Filter>Header Files\UserInterface</Filter>
+      <Filter>Header Files\EngineCode\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\EngineCode\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="ControlManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\EngineCode\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\EngineCode\UserInterface</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
