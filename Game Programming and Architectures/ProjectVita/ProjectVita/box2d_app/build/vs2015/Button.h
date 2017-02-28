@@ -12,6 +12,7 @@ public:
 	void HandleInput(gef::InputManager* inputManager);
 	void Draw(gef::SpriteRenderer* spriteRenderer);
 	void OnSelect();
+	void DeSelect();
 	~Button();
 protected:
 	gef::Sprite _sprite;

@@ -55,6 +55,9 @@
     <Filter Include="Source Files\GameCode">
       <UniqueIdentifier>{dab7e77d-25bd-4d88-9ac9-7de60ca9729e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameCode\Gameplay">
+      <UniqueIdentifier>{8a3eabe1-ff3d-4b08-b269-ef76abee8d8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\main_d3d11.cpp">
@@ -90,6 +93,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\scene_app.h">
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files\EngineCode\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,13 +16,18 @@ void Button::HandleInput(gef::InputManager * inputManager)
 
 void Button::Draw(gef::SpriteRenderer * spriteRenderer)
 {
-	UIControl::Draw(spriteRenderer);
+ 	UIControl::Draw(spriteRenderer);
 	spriteRenderer->DrawSprite(_sprite);	
 }
 
 void Button::OnSelect()
 {
-	
+	_trigger = true;
+}
+
+void Button::DeSelect()
+{
+
 }
 
 Button::~Button()

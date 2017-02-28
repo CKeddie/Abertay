@@ -238,6 +238,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControlManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="UIControl.cpp" />
   </ItemGroup>
@@ -249,6 +250,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControlManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="UIControl.h" />
   </ItemGroup>

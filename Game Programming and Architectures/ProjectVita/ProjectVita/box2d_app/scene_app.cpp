@@ -49,13 +49,15 @@ void SceneApp::Init()
 	SetupLights();
 
 	control_manager.SetFont(font_);
+
 	//UI Setup
-	button_ = new Button(sprite_, "Button", Vector4(platform_.width() / 2, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	button_ = new Button(sprite_, "Button1", Vector4(platform_.width() / 2, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
 	control_manager.AddControl(button_);
-	button_ = new Button(sprite_, "Button", Vector4(platform_.width() / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	button_ = new Button(sprite_, "Button2", Vector4(platform_.width() / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
 	control_manager.AddControl(button_);
-	button_ = new Button(sprite_, "Button", Vector4((platform_.width() * 2) / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
+	button_ = new Button(sprite_, "Button3", Vector4((platform_.width() * 2) / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
 	control_manager.AddControl(button_);
+
 }
 
 void SceneApp::CleanUp()

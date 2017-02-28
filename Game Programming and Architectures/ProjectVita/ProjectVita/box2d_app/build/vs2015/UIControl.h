@@ -34,6 +34,7 @@ public:
 	bool Enabled() { return _enabled; }
 	bool Visible() { return _visible; }
 	bool TabStop() { return _tabStop; }
+	bool Trigger() { return _trigger; }
 	gef::Font* Font() { return _font; }
 	gef::Colour Colour() { return _colour; }
 
@@ -46,6 +47,7 @@ public:
 	void SetEnabled(bool enabled) { _enabled = enabled; }
 	void SetVisible(bool visible) { _visible = visible; }
 	void SetTabStop(bool tabStop) { _tabStop = tabStop; }
+	void SetTrigger(bool trigger) { _trigger = trigger; }
 	void SetFont(gef::Font* font) { _font = font; }
 	void SetColour(gef::Colour colour) { _colour = colour; }
 protected:
@@ -57,6 +59,7 @@ protected:
 	bool _enabled;
 	bool _visible;
 	bool _tabStop;
+	bool _trigger;
 	gef::Font* _font;
 	gef::Colour _colour;
 };
