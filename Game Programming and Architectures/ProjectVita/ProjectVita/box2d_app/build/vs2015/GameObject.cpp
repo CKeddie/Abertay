@@ -21,9 +21,6 @@ GameObject::~GameObject()
 
 void GameObject::Update(float deltaTime)
 {
-	//Remove
-	//Yaw(5);
-	//
 	_transformMatrix.SetTranslation(_position);
 	CalculateLocalAxis();
 	_transformMatrix.Scale(_scale);
@@ -53,12 +50,10 @@ void GameObject::Pitch(float degrees)
 {
 	_rotation.set_x(_rotation.x() + degrees);
 	_transformMatrix.RotationX(gef::DegToRad(_rotation.x()));
-	//_rotation.set_x(gef::RadToDeg(atan2(_forward.x(), _forward.y())) * degrees);
 }
 
 void GameObject::Yaw(float degrees)
 {
-	//_rotation.set_y(gef::RadToDeg(atan2(_forward.z(), _forward.x())) * degrees);
 	_rotation.set_y(_rotation.y() + degrees);
 	_transformMatrix.RotationY(gef::DegToRad(_rotation.y()));
 }
@@ -66,7 +61,6 @@ void GameObject::Yaw(float degrees)
 void GameObject::Roll(float degrees)
 {
 	_rotation.set_z(_rotation.z() + degrees);
-	//_rotation.set_z(_rotation.z() + degrees);
 	_transformMatrix.RotationZ(gef::DegToRad(_rotation.z()));
 }
 

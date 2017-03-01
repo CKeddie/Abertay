@@ -2,20 +2,20 @@
 
 #include "graphics\renderer_3d.h"
 #include "maths\transform.h"
-#include "GameObject.h"
 
+
+class GameObject;
 
 class Component
 {
 public:
-	Component(GameObject * parent);
-	~Component();
-
+	Component(GameObject& parent);
 	virtual void Render(gef::Renderer3D* renderer);
 	virtual void Update(float deltaTime);
+	~Component();
 
-	GameObject* GetGameObject() { return _gameObject; }
+	GameObject& _gameObject;
 protected:
-	GameObject* _gameObject;
+	//GameObject _gameObject;
 };
 

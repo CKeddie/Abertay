@@ -8,6 +8,8 @@
 #include <assets/obj_loader.h>
 #include <graphics/model.h>
 
+#include <MeshRenderer.h>
+
 Camera camera_(gef::Vector4(0,0,5));
 gef::MeshInstance mInst;
 
@@ -18,7 +20,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	input_manager(NULL),
-	control_manager(font_)
+	control_manager(NULL)
 {
 
 }
@@ -36,6 +38,8 @@ void SceneApp::Init()
 	// setup the mesh for the player
 	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
 	
+	BuildPlayer();
+
 	gef::ImageData data;
 
 	png_loader_->Load("textures/hydra.png", platform_, data);
@@ -106,13 +110,15 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 	
 	renderer_3d_->set_override_material(&primitive_builder_->red_material());
-	renderer_3d_->DrawMesh(player_);
+	_player.Render(renderer_3d_);
+	//renderer_3d_->DrawMesh(player_);
 	renderer_3d_->set_override_material(NULL);
 
 	renderer_3d_->End();
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
+
 	control_manager.Draw(sprite_renderer_);
 	//sprite_renderer_->DrawSprite(sprite_);
 	DrawHUD();
@@ -156,4 +162,13 @@ void SceneApp::SetupLights()
 	default_point_light.set_colour(gef::Colour(0.7f, 0.7f, 1.0f, 1.0f));
 	default_point_light.set_position(gef::Vector4(-500.0f, 400.0f, 700.0f));
 	default_shader_data.AddPointLight(default_point_light);
+}
+
+void SceneApp::BuildPlayer()
+{
+	_player; 
+	MeshInstance mesh;
+	mesh.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+
+	_player.AddComponent(MeshRenderer(_player, mesh));
 }

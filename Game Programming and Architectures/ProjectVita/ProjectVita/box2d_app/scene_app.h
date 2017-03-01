@@ -50,6 +50,8 @@ private:
 	void CleanUpFont();
 	void DrawHUD();
 	void SetupLights();
+
+	void BuildPlayer();
 	
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;	
@@ -67,6 +69,7 @@ private:
 	gef::Model starship_;
 	gef::Sprite sprite_;
 	
+	GameObject _player;
 
 	Button* button_;
 

@@ -28,8 +28,10 @@ public:
 	void MoveTowards(Vector4 axis, float amount);
 	void CalculateLocalAxis();
 
+	void AddComponent(Component& component) { _components.push_back(component); }
+	void RemoveComponent(int index) { _components.erase(_components.begin() + index); }
 protected:
-	vector<Component> _components;
+	vector<Component&> _components;
 
 	Matrix44 _transformMatrix; // GameObject Transform Matrix	
 	Vector4 _position, _rotation, _oldRotation, _scale;

@@ -8,7 +8,7 @@ UIControl::UIControl()
 
 UIControl::UIControl(std::string text, gef::Vector4 position, gef::Vector4 size, gef::Font* font)
 {
-	_colour.SetFromAGBR(0xffffffff);
+	_colour.SetFromAGBR(0xfffff9ff);
 	_text = text;
 	_position = position;
 	_size = size;

@@ -2,9 +2,11 @@
 
 
 
-MeshRenderer::MeshRenderer(GameObject* gameObject, MeshInstance meshInstance) : Component::Component(gameObject)
+MeshRenderer::MeshRenderer(GameObject& gameObject, gef::MeshInstance& meshInstance) 
+	: Component::Component(gameObject),
+	_meshInstance(meshInstance)
 {
-	_meshInstance = meshInstance;
+
 }
 
 void MeshRenderer::Update(float deltaTime)
