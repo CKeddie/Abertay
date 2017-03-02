@@ -3,31 +3,38 @@
 
 GameObject::GameObject(Vector4 position, Vector4 rotation, Vector4 scale)
 {
-	_rotation = rotation;
-	_position = position;
-	_scale = scale;
+	v_rotation = rotation;
+	v_position = position;
+	v_scale = scale;
 
-	_transformMatrix.SetTranslation(_position);
-	_transformMatrix.RotationX(gef::DegToRad(_rotation.x()));
-	_transformMatrix.RotationY(gef::DegToRad(_rotation.y()));
-	_transformMatrix.RotationZ(gef::DegToRad(_rotation.z()));
-	_transformMatrix.Scale(_scale);	
+	CalculateLocalAxis();
+
+	m_transform.SetTranslation(v_position);
+
+	m_rotationX.RotationX(gef::DegToRad(v_rotation.x()));
+	m_rotationY.RotationY(gef::DegToRad(v_rotation.y()));
+	m_rotationZ.RotationZ(gef::DegToRad(v_rotation.z()));
+
+	m_scale.Scale(v_scale);	
+
 }
-
 
 GameObject::~GameObject()
 {
+
 }
 
 void GameObject::Update(float deltaTime)
 {
-	_transformMatrix.SetTranslation(_position);
+	m_transform.SetTranslation(v_position);
 	CalculateLocalAxis();
-	_transformMatrix.Scale(_scale);
+	m_scale.Scale(v_scale);
+
+	m_transform = m_transform * m_rotationX * m_rotationY * m_rotationZ * m_scale;
 
 	for (int i = 0; i < _components.size(); i++)
 	{
-		_components[i].Update(deltaTime);
+		_components[i]->Update(deltaTime);
 	}
 }
 
@@ -35,67 +42,64 @@ void GameObject::Render(Renderer3D * renderer)
 {
 	for (int i = 0; i < _components.size(); i++)
 	{
-		_components[i].Render(renderer);
+		_components[i]->Render(renderer);
 	}
 }
 
 void GameObject::Rotate(Vector4 axis, float amount)
 {
-	_rotation.set_x(_rotation.x() + (axis.x() * amount));
-	_rotation.set_y(_rotation.y() + (axis.y() * amount));
-	_rotation.set_z(_rotation.z() + (axis.z() * amount));
+	m_rotationX.RotationX(v_rotation.x() + (axis.x() * amount));
+	m_rotationY.RotationY(v_rotation.y() + (axis.y() * amount));
+	m_rotationZ.RotationZ(v_rotation.z() + (axis.z() * amount));
 }
 
 void GameObject::Pitch(float degrees)
 {
-	_rotation.set_x(_rotation.x() + degrees);
-	_transformMatrix.RotationX(gef::DegToRad(_rotation.x()));
+	v_rotation.set_x(v_rotation.x() + degrees);
+	m_rotationX.RotationX(gef::DegToRad(v_rotation.x()));
 }
 
 void GameObject::Yaw(float degrees)
 {
-	_rotation.set_y(_rotation.y() + degrees);
-	_transformMatrix.RotationY(gef::DegToRad(_rotation.y()));
+	v_rotation.set_y(v_rotation.y() + degrees);
+	m_transform.RotationY(gef::DegToRad(v_rotation.y()));
 }
 
 void GameObject::Roll(float degrees)
 {
-	_rotation.set_z(_rotation.z() + degrees);
-	_transformMatrix.RotationZ(gef::DegToRad(_rotation.z()));
+	v_rotation.set_z(v_rotation.z() + degrees);
+	m_rotationZ.RotationZ(gef::DegToRad(v_rotation.z()));
 }
 
 void GameObject::MoveForwards(float amount)
 {
-	_position += _forward * amount;
+	v_position += _forward * amount;
 }
-
 void GameObject::MoveRight(float amount)
 {
-	_position += _right * amount;
+	v_position += _right * amount;
 }
-
 void GameObject::MoveUp(float amount)
 {
-	_position += _up * amount;
+	v_position += _up * amount;
 }
-
 void GameObject::MoveTowards(Vector4 axis, float amount)
 {
-	_position += axis * amount;
+	v_position += axis * amount;
 }
 
 void GameObject::CalculateLocalAxis()
 {
-	if (!(_oldRotation == _rotation))
+	if (!(v_oldRotation == v_rotation))
 	{
-		_cosY = cosf(_rotation.y() * 3.1415f / 180);//x cos 
-		_sinY = sinf(_rotation.y() * 3.1415f / 180);//x sin	
+		_cosY = cosf(v_rotation.y() * 3.1415f / 180);//x cos 
+		_sinY = sinf(v_rotation.y() * 3.1415f / 180);//x sin	
 
-		_cosP = cosf(_rotation.x() * 3.1415f / 180);//y cos
-		_sinP = sinf(_rotation.x() * 3.1415f / 180);//y sin	
+		_cosP = cosf(v_rotation.x() * 3.1415f / 180);//y cos
+		_sinP = sinf(v_rotation.x() * 3.1415f / 180);//y sin	
 
-		_cosR = cosf(_rotation.z() * 3.1415f / 180);//z cos
-		_sinR = sinf(_rotation.z() * 3.1415f / 180);//z sin
+		_cosR = cosf(v_rotation.z() * 3.1415f / 180);//z cos
+		_sinR = sinf(v_rotation.z() * 3.1415f / 180);//z sin
 
 		_up.set_x((-_cosY * _sinR) - (_sinY * _sinP * _cosR));
 		_up.set_y(_cosP * _cosR);
@@ -112,12 +116,9 @@ void GameObject::CalculateLocalAxis()
 		_right.set_z((_up.x() * _forward.y()) - (_up.y() * _forward.x()));
 		_right.Normalise();
 
-		_oldRotation = _rotation;
+		v_oldRotation = v_rotation;
+	}
+	m_transform.LookAt(v_position, v_position + _forward, _up);
 }
-
-	//_transformMatrix.LookAt(_position, _position + _forward, _position + _up);
-}
-
-
 
 

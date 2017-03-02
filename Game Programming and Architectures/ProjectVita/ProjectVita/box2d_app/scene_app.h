@@ -66,10 +66,10 @@ private:
 	PrimitiveBuilder* primitive_builder_;
 
 	gef::MeshInstance player_;
-	gef::Model starship_;
+
 	gef::Sprite sprite_;
 	
-	GameObject _player;
+	GameObject _player = GameObject(Vector4(0, 0, 0));
 
 	Button* button_;
 

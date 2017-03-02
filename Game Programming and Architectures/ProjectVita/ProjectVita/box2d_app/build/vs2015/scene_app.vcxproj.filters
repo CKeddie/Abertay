@@ -94,7 +94,7 @@
       <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Source Files\EngineCode\GameObject\Graphics</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +126,7 @@
       <Filter>Header Files\EngineCode\UserInterface</Filter>
     </ClInclude>
     <ClInclude Include="MeshRenderer.h">
-      <Filter>Header Files\EngineCode\GameObject\Graphics</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -88,6 +88,5 @@ void Camera::Render(Renderer3D * renderer, Platform &platform)
 	projection_matrix = platform.PerspectiveProjectionFov(fov, aspect_ratio, 0.1f, 100.0f);
 
 	renderer->set_projection_matrix(projection_matrix);	
-	_transformMatrix.LookAt(_position, _position + _forward, _up);
-	renderer->set_view_matrix(_transformMatrix);
+	renderer->set_view_matrix(m_transform);
 }

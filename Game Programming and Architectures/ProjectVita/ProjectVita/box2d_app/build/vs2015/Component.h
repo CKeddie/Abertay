@@ -3,7 +3,6 @@
 #include "graphics\renderer_3d.h"
 #include "maths\transform.h"
 
-
 class GameObject;
 
 class Component
@@ -16,6 +15,5 @@ public:
 
 	GameObject& _gameObject;
 protected:
-	//GameObject _gameObject;
 };
 

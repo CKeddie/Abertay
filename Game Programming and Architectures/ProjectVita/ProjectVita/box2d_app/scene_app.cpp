@@ -91,11 +91,9 @@ bool SceneApp::Update(float frame_time)
 	Keyboard* kb = input_manager->keyboard();
 	if (kb->IsKeyPressed(gef::Keyboard::KC_ESCAPE))
 		return false;
+	_player.Yaw(10);
+	_player.Update(frame_time);
 
-	gef::Matrix44 player_transform;
-	player_transform.SetIdentity();
-	player_transform.Scale(Vector4(1, 1, 1));
-	player_.set_transform(player_transform);	
 
 	camera_.Input(kb, frame_time);
 	camera_.Update(fps_);
@@ -108,19 +106,21 @@ void SceneApp::Render()
 
 	// draw 3d geometry
 	renderer_3d_->Begin();
-	
-	renderer_3d_->set_override_material(&primitive_builder_->red_material());
-	_player.Render(renderer_3d_);
-	//renderer_3d_->DrawMesh(player_);
+
+	//Render player components
+	renderer_3d_->set_override_material(&primitive_builder_->blue_material());
+	_player.Render(renderer_3d_); 
 	renderer_3d_->set_override_material(NULL);
+	//-----------------------
 
 	renderer_3d_->End();
 
 	// start drawing sprites, but don't clear the frame buffer
 	sprite_renderer_->Begin(false);
 
+	//Draw controls within control manager
 	control_manager.Draw(sprite_renderer_);
-	//sprite_renderer_->DrawSprite(sprite_);
+		
 	DrawHUD();
 	sprite_renderer_->End();
 }
@@ -144,7 +144,6 @@ void SceneApp::DrawHUD()
 	{
 		// display frame rate
 		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
-		//font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "Camera Position: %",);
 	}
 }
 
@@ -165,10 +164,11 @@ void SceneApp::SetupLights()
 }
 
 void SceneApp::BuildPlayer()
-{
-	_player; 
-	MeshInstance mesh;
-	mesh.set_mesh(primitive_builder_->GetDefaultCubeMesh());
-
-	_player.AddComponent(MeshRenderer(_player, mesh));
+{ 	
+	gef::Matrix44 tranform;
+	tranform.SetIdentity();
+	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
+	player_.set_transform(tranform);
+	_player.AddComponent(new MeshRenderer(_player, &player_));
+	
 }
