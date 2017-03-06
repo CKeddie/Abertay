@@ -20,6 +20,7 @@
 #include "input\input_manager.h"
 #include "input\keyboard.h"
 
+#include "box2d\Box2D.h"
 
 #include "Camera.h"
 #include "GameObject.h"
@@ -51,8 +52,12 @@ private:
 	void DrawHUD();
 	void SetupLights();
 
+	void BroadPhase();
+
+	void BuildLevel();
 	void BuildPlayer();
 	
+	gef::AudioManager* audio_manager_;
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;	
 	gef::InputManager* input_manager;
@@ -60,16 +65,19 @@ private:
 	gef::OBJLoader* obj_loader_ = new gef::OBJLoader();
 	gef::Keyboard* keyboard_;
 	gef::PNGLoader* png_loader_ = new gef::PNGLoader();
-
 	ControlManager control_manager;
-
 	PrimitiveBuilder* primitive_builder_;
 
+	//gameplay members
+	b2World* world_;
+
 	gef::MeshInstance player_;
+	gef::MeshInstance ground_;
 
 	gef::Sprite sprite_;
-	
-	GameObject _player = GameObject(Vector4(0, 0, 0));
+
+	GameObject _player = GameObject(Vector4(0, 10, 0));
+	GameObject _ground = GameObject(Vector4(0, -1, 0));
 
 	Button* button_;
 

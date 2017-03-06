@@ -8,9 +8,15 @@
 #include <assets/obj_loader.h>
 #include <graphics/model.h>
 
+#include <audio\audio_manager.h>
+
+#include <Rigidbody2D.h>
+
 #include <MeshRenderer.h>
 
-Camera camera_(gef::Vector4(0,0,5));
+#include <graphics\mesh.h>
+
+Camera camera_(gef::Vector4(0,0,10), Vector4(0,0,0));
 gef::MeshInstance mInst;
 
 SceneApp::SceneApp(gef::Platform& platform) :
@@ -20,7 +26,9 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	input_manager(NULL),
-	control_manager(NULL)
+	control_manager(NULL),	
+	audio_manager_(NULL),
+	world_(NULL)
 {
 
 }
@@ -29,6 +37,7 @@ void SceneApp::Init()
 {
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
 	input_manager = gef::InputManager::Create(platform_);
+	// audio_manager_ = gef::AudioManager::Create();
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
 
@@ -38,7 +47,6 @@ void SceneApp::Init()
 	// setup the mesh for the player
 	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
 	
-	BuildPlayer();
 
 	gef::ImageData data;
 
@@ -62,6 +70,11 @@ void SceneApp::Init()
 	button_ = new Button(sprite_, "Button3", Vector4((platform_.width() * 2) / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
 	control_manager.AddControl(button_);
 
+	//initialize physics simulation
+	b2Vec2 gravity = b2Vec2(0, -0.81f);
+	world_ = new b2World(gravity);
+	BuildPlayer();
+	BuildLevel();
 }
 
 void SceneApp::CleanUp()
@@ -84,15 +97,30 @@ bool SceneApp::Update(float frame_time)
 
 	if (!input_manager)
 		return true;
+	
+	//update physics simulation
+	float32 timeStep = 1.0f / 60.0f;
+	int32 velocityIter = 6;
+	int32 positionIter = 2;
 
+	world_->Step(timeStep, velocityIter, positionIter);
+	//
+
+	//Update UI controls
 	input_manager->Update();
 	control_manager.Update(frame_time, input_manager);
+	//
 
+	//Update input
 	Keyboard* kb = input_manager->keyboard();
+
+	//if escape pressed exit application
 	if (kb->IsKeyPressed(gef::Keyboard::KC_ESCAPE))
 		return false;
-	_player.Yaw(10);
+	
+	_player.Yaw(45);
 	_player.Update(frame_time);
+	_ground.Update(frame_time);
 
 
 	camera_.Input(kb, frame_time);
@@ -110,6 +138,8 @@ void SceneApp::Render()
 	//Render player components
 	renderer_3d_->set_override_material(&primitive_builder_->blue_material());
 	_player.Render(renderer_3d_); 
+	renderer_3d_->set_override_material(&primitive_builder_->red_material());
+	_ground.Render(renderer_3d_);
 	renderer_3d_->set_override_material(NULL);
 	//-----------------------
 
@@ -142,8 +172,17 @@ void SceneApp::DrawHUD()
 {
 	if(font_)
 	{
+		Vector4 v = _ground.GetPosition();
+		//Vector4 v1 = camera_.GetTransformMatrix().GetRow(1);
+		Vector4 v2 = _player.GetPosition();
 		// display frame rate
-		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
+		//font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
+		font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 400.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
+			"ground : %.1f, %.1f, %.1f", v.x(), v.y(), v.z());
+		//font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 420.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
+			//"FPS: %.1f, %.1f, %.1f", v1.x(), v1.y(), v1.z()); 
+		font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 440.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
+			"player : %.1f, %.1f, %.1f", v2.x(), v2.y(), v2.z());
 	}
 }
 
@@ -163,12 +202,22 @@ void SceneApp::SetupLights()
 	default_shader_data.AddPointLight(default_point_light);
 }
 
+void SceneApp::BroadPhase()
+{
+
+}
+
+void SceneApp::BuildLevel()
+{		
+	ground_.set_mesh(primitive_builder_->GetDefaultCubeMesh());	
+	_ground.AddComponent(new MeshRenderer(_ground, &ground_));
+	_ground.AddComponent(new Rigidbody2D(_ground, world_, b2_staticBody, 0.5f, 0.5f));
+}
+
 void SceneApp::BuildPlayer()
 { 	
-	gef::Matrix44 tranform;
-	tranform.SetIdentity();
+		
 	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
-	player_.set_transform(tranform);
 	_player.AddComponent(new MeshRenderer(_player, &player_));
-	
+	_player.AddComponent(new Rigidbody2D(_player, world_, b2_dynamicBody, 0.5f, 0.5f));
 }

@@ -3,20 +3,25 @@
 
 GameObject::GameObject(Vector4 position, Vector4 rotation, Vector4 scale)
 {
-	v_rotation = rotation;
 	v_position = position;
+
+	v_rotation = rotation;
+	v_oldRotation = v_rotation + Vector4(1, 1, 1);
 	v_scale = scale;
 
-	CalculateLocalAxis();
+	//Initialize Matrices
+	m_translate.SetIdentity();
+	m_translate.SetTranslation(position);
 
-	m_transform.SetTranslation(v_position);
+	m_rotationX.SetIdentity();
+	m_rotationX.RotationX(gef::DegToRad(rotation.x()));
+	m_rotationY.SetIdentity();
+	m_rotationY.RotationY(gef::DegToRad(rotation.y()));
+	m_rotationZ.SetIdentity();
+	m_rotationZ.RotationZ(gef::DegToRad(rotation.z()));
 
-	m_rotationX.RotationX(gef::DegToRad(v_rotation.x()));
-	m_rotationY.RotationY(gef::DegToRad(v_rotation.y()));
-	m_rotationZ.RotationZ(gef::DegToRad(v_rotation.z()));
-
-	m_scale.Scale(v_scale);	
-
+	m_scale.SetIdentity();
+	m_scale.Scale(scale);
 }
 
 GameObject::~GameObject()
@@ -26,11 +31,14 @@ GameObject::~GameObject()
 
 void GameObject::Update(float deltaTime)
 {
-	m_transform.SetTranslation(v_position);
-	CalculateLocalAxis();
-	m_scale.Scale(v_scale);
+	m_translate.SetTranslation(v_position);
 
-	m_transform = m_transform * m_rotationX * m_rotationY * m_rotationZ * m_scale;
+	CalculateRotation();
+
+	Vector4 forward = v_position + _forward;
+	Vector4 up = v_position + _up;
+	
+	m_transform = m_translate * (m_rotationX * m_rotationY * m_rotationZ) * m_scale;	
 
 	for (int i = 0; i < _components.size(); i++)
 	{
@@ -46,29 +54,23 @@ void GameObject::Render(Renderer3D * renderer)
 	}
 }
 
-void GameObject::Rotate(Vector4 axis, float amount)
+void GameObject::DebugRenderer(gef::SpriteRenderer * spriteRenderer)
 {
-	m_rotationX.RotationX(v_rotation.x() + (axis.x() * amount));
-	m_rotationY.RotationY(v_rotation.y() + (axis.y() * amount));
-	m_rotationZ.RotationZ(v_rotation.z() + (axis.z() * amount));
 }
 
 void GameObject::Pitch(float degrees)
 {
 	v_rotation.set_x(v_rotation.x() + degrees);
-	m_rotationX.RotationX(gef::DegToRad(v_rotation.x()));
 }
 
 void GameObject::Yaw(float degrees)
 {
 	v_rotation.set_y(v_rotation.y() + degrees);
-	m_transform.RotationY(gef::DegToRad(v_rotation.y()));
 }
 
 void GameObject::Roll(float degrees)
 {
 	v_rotation.set_z(v_rotation.z() + degrees);
-	m_rotationZ.RotationZ(gef::DegToRad(v_rotation.z()));
 }
 
 void GameObject::MoveForwards(float amount)
@@ -88,18 +90,16 @@ void GameObject::MoveTowards(Vector4 axis, float amount)
 	v_position += axis * amount;
 }
 
-void GameObject::CalculateLocalAxis()
+void GameObject::CalculateRotation()
 {
 	if (!(v_oldRotation == v_rotation))
 	{
-		_cosY = cosf(v_rotation.y() * 3.1415f / 180);//x cos 
-		_sinY = sinf(v_rotation.y() * 3.1415f / 180);//x sin	
-
-		_cosP = cosf(v_rotation.x() * 3.1415f / 180);//y cos
-		_sinP = sinf(v_rotation.x() * 3.1415f / 180);//y sin	
-
-		_cosR = cosf(v_rotation.z() * 3.1415f / 180);//z cos
-		_sinR = sinf(v_rotation.z() * 3.1415f / 180);//z sin
+		_cosY = cosf(gef::DegToRad(v_rotation.y()));//x cos 
+		_sinY = sinf(gef::DegToRad(v_rotation.y()));//x sin
+		_cosP = cosf(gef::DegToRad(v_rotation.x()));//y cos
+		_sinP = sinf(gef::DegToRad(v_rotation.x()));//y sin
+		_cosR = cosf(gef::DegToRad(v_rotation.z()));//z cos
+		_sinR = sinf(gef::DegToRad(v_rotation.z()));//z sin
 
 		_up.set_x((-_cosY * _sinR) - (_sinY * _sinP * _cosR));
 		_up.set_y(_cosP * _cosR);
@@ -117,8 +117,12 @@ void GameObject::CalculateLocalAxis()
 		_right.Normalise();
 
 		v_oldRotation = v_rotation;
-	}
-	m_transform.LookAt(v_position, v_position + _forward, _up);
+
+		/*m_rotationX.RotationX(gef::DegToRad(v_rotation.x()));
+		m_rotationY.RotationY(gef::DegToRad(v_rotation.y()));
+		m_rotationZ.RotationZ(gef::DegToRad(v_rotation.z()));*/
+
+	}	
 }
 
 

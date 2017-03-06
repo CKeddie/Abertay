@@ -1,8 +1,9 @@
 #pragma once
 
-#include "graphics\renderer_3d.h"
-#include "maths\transform.h"
-#include "Component.h"
+#include <graphics\sprite_renderer.h>
+#include <graphics\renderer_3d.h>
+#include <maths\transform.h>
+#include <Component.h>
 #include <vector>
 #include <algorithm>
 
@@ -12,13 +13,13 @@ using namespace gef;
 class GameObject
 {
 public:
-	GameObject(Vector4 position = Vector4(), Vector4 rotation = Vector4(), Vector4 scale = Vector4(1,1,1));
+	GameObject(Vector4 position = Vector4(), Vector4 rotation = Vector4(0,0,0), Vector4 scale = Vector4(1,1,1));
 	~GameObject();
 
 	virtual void Update(float deltaTime);
 	virtual void Render(Renderer3D* renderer);
+	virtual void DebugRenderer(gef::SpriteRenderer* spriteRenderer);
 
-	void Rotate(Vector4 axis, float amount);
 	void Pitch(float degrees);
 	void Yaw(float degrees);
 	void Roll(float degrees);
@@ -27,22 +28,32 @@ public:
 	void MoveRight(float amount);
 	void MoveUp(float amount);
 	void MoveTowards(Vector4 axis, float amount);
-	void CalculateLocalAxis();
+	void CalculateRotation();
+
+	void SetPosition(Vector4 position) { v_position = position; }
+	Vector4 GetPosition() { return v_position; }
+	
+	void SetRotation(Vector4 rotation) { v_rotation = rotation; }
+	Vector4 GetRotation() { return v_rotation; }
+	
+	void SetScale(Vector4 scale) { v_scale = scale; }
+	Vector4 GetScale() { return v_scale; }
+	Matrix44 GetTransformMatrix() { return m_transform; }
 
 	void AddComponent(Component* component) { _components.push_back(component); }
 	Component* GetComponent(int index) { return _components[index]; }
 
-	Matrix44 GetTransformMatrix() { return m_transform; }
 
 protected:
 	vector<Component*> _components;
 
+	Matrix44 m_transform;
 	Matrix44 m_rotationX, m_rotationY, m_rotationZ;
-	Matrix44 m_scale, m_transform; // GameObject Transform Matrix	
+	Matrix44 m_scale, m_translate;	
+	Matrix44 m_lookAt;
 
-	Vector4 v_position, v_rotation, v_oldRotation, v_scale;
-
-	Vector4 _forward, _up, _right; //Local Axis
+	Vector4 v_position = Vector4(), v_rotation = Vector4(), v_oldRotation = Vector4(), v_scale = Vector4();
+	Vector4 _forward = Vector4(), _up = Vector4(), _right = Vector4(); //Local Axis
 
 private:
 	float _cosY, _sinY, // Yaw

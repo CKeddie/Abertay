@@ -85,8 +85,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)../../media</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -233,24 +234,32 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControlManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Messenger.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rigidbody2D.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="UIControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\primitive_builder.h" />
     <ClInclude Include="..\..\scene_app.h" />
+    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControlManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Messenger.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Rigidbody2D.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="UIControl.h" />
   </ItemGroup>
