@@ -102,20 +102,20 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
+    <ClCompile Include="Messenger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rigidbody2D.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
     </ClCompile>
-    <ClCompile Include="Messenger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxCollider.cpp">
+      <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

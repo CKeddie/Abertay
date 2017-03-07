@@ -1,7 +1,16 @@
 #pragma once
-#include "Component.h"
+
 #include "input\input_manager.h"
 #include "input\keyboard.h"
+
+#include "box2d\Box2D.h"
+
+#include "Component.h"
+#include "Rigidbody2D.h"
+
+#include "GameObject.h"
+
+class GameObject;
 
 class Player :
 	public Component
@@ -13,5 +22,7 @@ public:
 	~Player();
 protected:
 	gef::InputManager& _inputManager;
+	Rigidbody2D* rigidbody;
+	b2Body* body;
 };
 

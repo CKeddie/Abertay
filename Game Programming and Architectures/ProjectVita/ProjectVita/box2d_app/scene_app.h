@@ -4,6 +4,7 @@
 #include <system\application.h>
 
 #include <maths\vector2.h>
+#include <map>
 
 #include "primitive_builder.h"
 
@@ -26,6 +27,7 @@
 #include "GameObject.h"
 #include "ControlManager.h"
 #include "Button.h"
+#include "Player.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -71,13 +73,18 @@ private:
 	//gameplay members
 	b2World* world_;
 
+	std::map <string, Model*> model_Repository;
+
 	gef::MeshInstance player_;
 	gef::MeshInstance ground_;
+	Model* model;
+
+	gef::Material* material;
 
 	gef::Sprite sprite_;
 
-	GameObject _player = GameObject(Vector4(0, 10, 0));
-	GameObject _ground = GameObject(Vector4(0, -1, 0));
+	GameObject _player = GameObject("Player", Vector4(0, 10, 0), Vector4(0, 0, 0), Vector4(1.1f, 1.1f, 1.1f));
+	GameObject _ground = GameObject("Ground",Vector4(0, -1, 0));
 
 	Button* button_;
 

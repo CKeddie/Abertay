@@ -8,10 +8,11 @@ class Camera :
 	public GameObject
 {
 public:
-	Camera(Vector4 position = Vector4(0, 0, 0), Vector4 rotation = Vector4(0, 0, 0), Vector4 scale = Vector4(1, 1, 1));
+	Camera(Vector4 position, Vector4 rotation, Vector4 scale);
 	~Camera();
 
 	void Update(float deltaTime);
+	void LockTo(GameObject * gameObject);
 	void Input(Keyboard * kb, float deltaTime);
 	void Render(Renderer3D* renderer, Platform & platform);
 

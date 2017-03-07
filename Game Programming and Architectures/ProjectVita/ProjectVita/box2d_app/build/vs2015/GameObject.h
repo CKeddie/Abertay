@@ -6,6 +6,8 @@
 #include <Component.h>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
+
 
 using namespace std;
 using namespace gef;
@@ -13,7 +15,7 @@ using namespace gef;
 class GameObject
 {
 public:
-	GameObject(Vector4 position = Vector4(), Vector4 rotation = Vector4(0,0,0), Vector4 scale = Vector4(1,1,1));
+	GameObject(const char* tag, Vector4 position = Vector4(), Vector4 rotation = Vector4(0,0,0), Vector4 scale = Vector4(1,1,1));
 	~GameObject();
 
 	virtual void Update(float deltaTime);
@@ -40,12 +42,21 @@ public:
 	Vector4 GetScale() { return v_scale; }
 	Matrix44 GetTransformMatrix() { return m_transform; }
 
-	void AddComponent(Component* component) { _components.push_back(component); }
-	Component* GetComponent(int index) { return _components[index]; }
+	void AddComponent(Component* component) 
+	{ 
+		_components[&typeid(*component)] = component;
+	}
+	
+	template <typename T> T* GetComponent() 
+	{
+		return dynamic_cast<T*>(_components[&typeid(T)]);
+	}
 
+	string Tag;
 
 protected:
-	vector<Component*> _components;
+	
+	unordered_map < const type_info*, Component* > _components;
 
 	Matrix44 m_transform;
 	Matrix44 m_rotationX, m_rotationY, m_rotationZ;

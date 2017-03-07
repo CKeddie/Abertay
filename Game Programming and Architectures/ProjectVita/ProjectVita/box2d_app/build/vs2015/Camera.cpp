@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "maths\math_utils.h"
 
-Camera::Camera(Vector4 position, Vector4 rotation, Vector4 scale) : GameObject(position, rotation, scale)
+Camera::Camera(Vector4 position, Vector4 rotation, Vector4 scale) : GameObject("Camera", position, rotation, scale)
 {
 }
 
@@ -12,6 +12,12 @@ Camera::~Camera()
 void Camera::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
+}
+
+void Camera::LockTo(GameObject* gameObject)
+{
+	v_position.set_x(gameObject->GetPosition().x());
+	v_position.set_y(gameObject->GetPosition().y());
 }
 
 void Camera::Input(Keyboard* kb, float deltaTime)

@@ -1,8 +1,9 @@
 #include "GameObject.h"
 #include "maths\math_utils.h"
 
-GameObject::GameObject(Vector4 position, Vector4 rotation, Vector4 scale)
+GameObject::GameObject(const char * tag, Vector4 position, Vector4 rotation, Vector4 scale)
 {
+	Tag = tag;
 	v_position = position;
 
 	v_rotation = rotation;
@@ -24,6 +25,7 @@ GameObject::GameObject(Vector4 position, Vector4 rotation, Vector4 scale)
 	m_scale.Scale(scale);
 }
 
+
 GameObject::~GameObject()
 {
 
@@ -40,17 +42,18 @@ void GameObject::Update(float deltaTime)
 	
 	m_transform = m_translate * (m_rotationX * m_rotationY * m_rotationZ) * m_scale;	
 
-	for (int i = 0; i < _components.size(); i++)
+	for (auto& x : _components)//; i < _components.size(); i++)
 	{
-		_components[i]->Update(deltaTime);
+		x.second->Update(deltaTime);		
 	}
+
 }
 
 void GameObject::Render(Renderer3D * renderer)
 {
-	for (int i = 0; i < _components.size(); i++)
+	for (auto& x : _components)//; i < _components.size(); i++)
 	{
-		_components[i]->Render(renderer);
+		x.second->Render(renderer);
 	}
 }
 
