@@ -47,7 +47,7 @@ public:
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
-	
+
 private:
 	void InitFont();
 	void CleanUpFont();
@@ -58,10 +58,10 @@ private:
 
 	void BuildLevel();
 	void BuildPlayer();
-	
+
 	gef::AudioManager* audio_manager_;
 	gef::SpriteRenderer* sprite_renderer_;
-	gef::Font* font_;	
+	gef::Font* font_;
 	gef::InputManager* input_manager;
 	gef::Renderer3D* renderer_3d_;
 	gef::OBJLoader* obj_loader_ = new gef::OBJLoader();
@@ -77,14 +77,13 @@ private:
 
 	gef::MeshInstance player_;
 	gef::MeshInstance ground_;
-	Model* model;
 
 	gef::Material* material;
 
 	gef::Sprite sprite_;
 
-	GameObject _player = GameObject("Player", Vector4(0, 10, 0), Vector4(0, 0, 0), Vector4(1.1f, 1.1f, 1.1f));
-	GameObject _ground = GameObject("Ground",Vector4(0, -1, 0));
+	GameObject _player = GameObject("Player", Vector4(0, 0, -10), Vector4(0, 0, 0), Vector4(2.0f, 2.0f, 2.0f));
+	GameObject _ground = GameObject("Ground", Vector4(0, -1.0f, 0));
 
 	Button* button_;
 

@@ -15,9 +15,12 @@
 #include <MeshRenderer.h>
 
 #include <graphics\mesh.h>
+#include <GamePhysicsEvents.h>
 
 Camera camera_(gef::Vector4(0,0,10), Vector4(0,0,0), Vector4(1,1,1));
 gef::MeshInstance mInst;
+
+GamePhysicsEvents gamePhysicsEvents;
 
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
@@ -26,7 +29,7 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	input_manager(NULL),
-	control_manager(NULL),	
+	control_manager(NULL),
 	audio_manager_(NULL),
 	world_(NULL)
 {
@@ -44,25 +47,24 @@ void SceneApp::Init()
 	// initialise primitive builder to make create some 3D geometry easier
 	primitive_builder_ = new PrimitiveBuilder(platform_);
 
+	Model* model = new Model();
 	// setup the mesh for the player
-	player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
-
 	obj_loader_->Load("models/space_frigate_6/space_frigate_6.obj", platform_, *model);
 
-	gef::ImageData texture;
-	png_loader_->Load("models/space_frigate_6/space_frigate_6_color.png", platform_, texture);
-	material = new Material();
-	material->set_texture(gef::Texture::Create(platform_, texture));
-	model->AddMaterial(material);
-
-	model_Repository.insert(std::pair <string, Model*>("space_frigate_6", model));
-	
-	//_player.GetComponent<MeshRenderer>()->_material = model_Repository.at("space_frigate_6")->material(0);
+	model_Repository.insert(std::pair<string, Model*>("space_frigate_6", model));
 	
 	gef::ImageData data;
-	
+
 	png_loader_->Load("textures/hydra.png", platform_, data);
+
+	gef::ImageData spaceData;
+
+	png_loader_->Load("textures/seamless space_0.png", platform_, spaceData);
+
+	//material->set_texture(Texture::Create(platform_, spaceData));
 	
+	
+
 	sprite_.set_texture(Texture::Create(platform_, data));
 	sprite_.set_position(50, 50, 100);
 	sprite_.set_width(data.width());
@@ -82,10 +84,14 @@ void SceneApp::Init()
 	control_manager.AddControl(button_);
 
 	//initialize physics simulation
-	b2Vec2 gravity = b2Vec2(0, -9.81f);
+	b2Vec2 gravity = b2Vec2(0, 0);
 	world_ = new b2World(gravity);
+
 	BuildPlayer();
 	BuildLevel();
+
+	//_player.GetComponent<MeshRenderer>()->GetMaterial()->set_texture(Texture::Create(platform_, spaceData));
+	//_player.Roll(56);
 }
 
 void SceneApp::CleanUp()
@@ -149,10 +155,9 @@ void SceneApp::Render()
 	renderer_3d_->Begin();
 
 	//Render player components
-	//renderer_3d_->set_override_material(&primitive_builder_->blue_material());
 	_player.Render(renderer_3d_); 
-	renderer_3d_->set_override_material(material);
 	_ground.Render(renderer_3d_);
+
 	renderer_3d_->set_override_material(NULL);
 	//-----------------------
 
@@ -162,7 +167,7 @@ void SceneApp::Render()
 	sprite_renderer_->Begin(false);
 
 	//Draw controls within control manager
-	//control_manager.Draw(sprite_renderer_);
+	control_manager.Draw(sprite_renderer_);
 		
 	DrawHUD();
 	sprite_renderer_->End();
@@ -228,7 +233,7 @@ void SceneApp::BroadPhase()
 			b2Body* A = contact->GetFixtureA()->GetBody();
 			b2Body* B = contact->GetFixtureB()->GetBody();
 
-			A->ApplyForce(b2Vec2(0, 200), A->GetPosition(), true);
+			//A->ApplyForce(b2Vec2(0, 200), A->GetPosition(), true);
 		}
 	}
 }
@@ -242,9 +247,8 @@ void SceneApp::BuildLevel()
 
 void SceneApp::BuildPlayer()
 { 	
-		
-	//player_.set_mesh(primitive_builder_->GetDefaultCubeMesh());
-	_player.AddComponent(new MeshRenderer(_player, model_Repository["space_frigate_6"]));
+	player_.set_mesh(model_Repository["space_frigate_6"]->mesh());
+	_player.AddComponent(new MeshRenderer(_player, &player_));
 	_player.AddComponent(new Rigidbody2D(_player, world_, b2_dynamicBody, 0.5f, 0.5f));
 	_player.AddComponent(new Player(_player, *input_manager));
 }

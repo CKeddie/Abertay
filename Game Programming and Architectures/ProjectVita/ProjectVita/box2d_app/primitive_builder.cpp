@@ -317,3 +317,42 @@ gef::Mesh* PrimitiveBuilder::CreateSphereMesh(const float radius, const int phi,
 
 	return mesh;
 }
+
+//
+gef::Mesh * PrimitiveBuilder::CreatePlaneMesh(const float sizeX, const float sizeY, gef::Vector4 origin, gef::Material * material)
+{
+	gef::Mesh* mesh = platform_.CreateMesh();
+
+	const int kNumVertices = 4;
+	std::vector<gef::Mesh::Vertex> vertices;
+	std::vector<gef::Mesh::Vertex> normals;
+	std::vector<gef::Mesh::Vertex> uvs;
+	
+	vertices.resize(kNumVertices);
+	normals.resize(kNumVertices);
+	uvs.resize(kNumVertices);
+
+	float theta = 45;
+
+	for (int i = 0; i < kNumVertices; i++)
+	{
+		float angle = ( ( 360 / kNumVertices ) * i ) - theta;
+		float x = roundf(cos(angle));
+		float y = roundf(sin(angle));
+		
+		gef::Mesh::Vertex v;
+		v.px = x * sizeX;
+		v.py = y * sizeX;
+		v.pz = origin.x();
+
+		v.nx = 0;
+		v.ny = 0;
+		v.nz = 1;
+
+		v.u = x <= 0 ? 0 : x;
+		v.v = y <= 0 ? 0 : x;
+
+		vertices.push_back(v);
+	}
+	return nullptr;
+}

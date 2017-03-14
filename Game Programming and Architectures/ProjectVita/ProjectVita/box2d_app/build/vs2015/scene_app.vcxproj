@@ -239,7 +239,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControlManager.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GamePhysicsEvents.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Messenger.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -255,7 +257,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControlManager.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GamePhysicsEvents.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Messenger.h" />
     <ClInclude Include="Player.h" />

@@ -49,7 +49,7 @@ public:
 	
 	template <typename T> T* GetComponent() 
 	{
-		return dynamic_cast<T*>(_components[&typeid(T)]);
+		return static_cast<T*>(_components[&typeid(T)]);
 	}
 
 	string Tag;
