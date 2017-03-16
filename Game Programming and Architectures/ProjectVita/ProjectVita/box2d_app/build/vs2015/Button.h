@@ -1,20 +1,16 @@
 #pragma once
-#include "UIControl.h"
-#include "graphics\sprite.h"
-#include "graphics\image_data.h"
-#include "graphics\texture.h"
 
-
+#include <graphics\sprite.h>
+#include <graphics\image_data.h>
+#include <graphics\texture.h>
+#include <Control.h>
 
 class Button :
-	public UIControl
+	public Control
 {
 public:
-	Button(gef::Sprite sprite, std::string text, gef::Vector4 position, gef::Vector4 size, gef::Font* font);
-	void HandleInput(gef::InputManager* inputManager);
+	Button(SceneApp & target, OnActivate function, gef::Font * font, gef::Sprite sprite);
 	void Draw(gef::SpriteRenderer* spriteRenderer);
-	void OnSelect(void*);
-	void DeSelect();
 	~Button();
 protected:
 	gef::Sprite _sprite;

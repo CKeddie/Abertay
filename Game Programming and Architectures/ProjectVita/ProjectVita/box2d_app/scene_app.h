@@ -3,8 +3,8 @@
 
 #include <system\application.h>
 
-#include <maths\vector2.h>
 #include <map>
+#include <vector>
 
 #include "primitive_builder.h"
 
@@ -25,9 +25,10 @@
 
 #include "Camera.h"
 #include "GameObject.h"
-#include "ControlManager.h"
-#include "Button.h"
-#include "Player.h"
+
+#include <TitleScreen.h>
+#include <MenuScreen.h>
+#include <MainGame.h>
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -44,21 +45,27 @@ class SceneApp : public gef::Application
 public:
 	SceneApp(gef::Platform& platform);
 	void Init();
+	void ChangeState();
 	void CleanUp();
 	bool Update(float frame_time);
 	void Render();
 
-private:
 	void InitFont();
+
+	void LoadModels();
+	void LoadImages();
+	void LoadMaterials();
+
+	void PushState();
+	void PopState();
+
+	void Quit();
+		
 	void CleanUpFont();
-	void DrawHUD();
 	void SetupLights();
+	void DrawHUD();
 
-	void BroadPhase();
-
-	void BuildLevel();
-	void BuildPlayer();
-
+	//Game components
 	gef::AudioManager* audio_manager_;
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
@@ -67,25 +74,16 @@ private:
 	gef::OBJLoader* obj_loader_ = new gef::OBJLoader();
 	gef::Keyboard* keyboard_;
 	gef::PNGLoader* png_loader_ = new gef::PNGLoader();
-	ControlManager control_manager;
 	PrimitiveBuilder* primitive_builder_;
 
-	//gameplay members
-	b2World* world_;
+	//GameState Management
+	std::vector<GameState*> game_states_;
+	int index_ = -1;
+	bool is_Running_ = true;
 
+	//Model Storage
 	std::map <string, Model*> model_Repository;
-
-	gef::MeshInstance player_;
-	gef::MeshInstance ground_;
-
-	gef::Material* material;
-
-	gef::Sprite sprite_;
-
-	GameObject _player = GameObject("Player", Vector4(0, 0, -10), Vector4(0, 0, 0), Vector4(2.0f, 2.0f, 2.0f));
-	GameObject _ground = GameObject("Ground", Vector4(0, -1.0f, 0));
-
-	Button* button_;
+	std::map <string, Sprite*> image_Repository;
 
 	float fps_;
 };

@@ -67,6 +67,12 @@
     <Filter Include="Header Files\EngineCode\GameObjectComponent\Gameplay">
       <UniqueIdentifier>{480aab64-fd45-4aed-a1bc-576b94f655d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\EngineCode\GameObjectComponent\BaseComponent">
+      <UniqueIdentifier>{0ff68ffa-6773-43cd-a896-7d9599334ece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameCode\GameStates">
+      <UniqueIdentifier>{93378224-b1ee-4c30-852f-6ed74491cd8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\main_d3d11.cpp">
@@ -87,23 +93,14 @@
     <ClCompile Include="Component.cpp">
       <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
     </ClCompile>
-    <ClCompile Include="UIControl.cpp">
-      <Filter>Source Files\EngineCode\UserInterface</Filter>
-    </ClCompile>
     <ClCompile Include="ControlManager.cpp">
       <Filter>Source Files\EngineCode\UserInterface</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\EngineCode\GameObject\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files\EngineCode\SceneManager</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\EngineCode\UserInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="Messenger.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rigidbody2D.cpp">
       <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
@@ -120,7 +117,22 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\EngineCode\GameObjectComponents</Filter>
     </ClCompile>
-    <ClCompile Include="GamePhysicsEvents.cpp">
+    <ClCompile Include="GameState.cpp">
+      <Filter>Source Files\EngineCode\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Control.cpp">
+      <Filter>Source Files\EngineCode\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScreen.cpp">
+      <Filter>Source Files\GameCode\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteGrid.cpp">
+      <Filter>Source Files\EngineCode\UserInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScreen.cpp">
+      <Filter>Source Files\GameCode\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,17 +146,8 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\EngineCode\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files\EngineCode\GameObjectComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\EngineCode\GameObject\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="UIControl.h">
-      <Filter>Header Files\EngineCode\UserInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\EngineCode\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="ControlManager.h">
       <Filter>Header Files\EngineCode\UserInterface</Filter>
@@ -161,16 +164,31 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files\EngineCode\GameObjectComponent\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="Rigidbody2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Messenger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files\EngineCode\GameObjectComponent\Gameplay</Filter>
     </ClInclude>
-    <ClInclude Include="GamePhysicsEvents.h">
+    <ClInclude Include="Control.h">
+      <Filter>Header Files\EngineCode\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Header Files\EngineCode\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files\EngineCode\GameObjectComponent\BaseComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody2D.h">
+      <Filter>Header Files\EngineCode\GameObjectComponent\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScreen.h">
+      <Filter>Header Files\GameCode\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteGrid.h">
+      <Filter>Header Files\EngineCode\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

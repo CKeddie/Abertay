@@ -4,27 +4,28 @@
 #include <maths/vector4.h>
 #include <graphics\font.h>
 #include <graphics\colour.h>
-#include <graphics\sprite_renderer.h>
 
 #include <input\input_manager.h>
 #include <input\keyboard.h>
 
-/*
-Serves as a base abstract class for constructing UI Controls
-*/
-class UIControl
+#include <graphics\sprite_renderer.h>
+
+class SceneApp;
+
+class Control
 {
 public:
-	UIControl();
-	UIControl(std::string text, gef::Vector4 position, gef::Vector4 size, gef::Font * font);
+	typedef void ( SceneApp::*OnActivate )(  );
+	Control(SceneApp& target, OnActivate function, gef::Font* font);
+	~Control();
+
 	virtual void Update(float deltaTime);
 	virtual void Draw(gef::SpriteRenderer* spriteRenderer);
 	virtual void HandleInput(gef::InputManager* inputManager);
 	virtual void OnSelect();
-	~UIControl();
-
-	//__event void OnSelect();
-
+	
+	void Execute();
+	
 	//Getters
 	std::string Name() { return _name; }
 	std::string Text() { return _text; }
@@ -34,7 +35,6 @@ public:
 	bool Enabled() { return _enabled; }
 	bool Visible() { return _visible; }
 	bool TabStop() { return _tabStop; }
-	bool Trigger() { return _trigger; }
 	gef::Font* Font() { return _font; }
 	gef::Colour Colour() { return _colour; }
 
@@ -47,9 +47,9 @@ public:
 	void SetEnabled(bool enabled) { _enabled = enabled; }
 	void SetVisible(bool visible) { _visible = visible; }
 	void SetTabStop(bool tabStop) { _tabStop = tabStop; }
-	void SetTrigger(bool trigger) { _trigger = trigger; }
 	void SetFont(gef::Font* font) { _font = font; }
 	void SetColour(gef::Colour colour) { _colour = colour; }
+
 protected:
 	std::string _name;
 	std::string _text;
@@ -59,8 +59,9 @@ protected:
 	bool _enabled;
 	bool _visible;
 	bool _tabStop;
-	bool _trigger;
 	gef::Font* _font;
-	gef::Colour _colour;
+	gef::Colour _colour, _selectedColour;
+private:
+	SceneApp& _target;
+	OnActivate _function;
 };
-

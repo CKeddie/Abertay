@@ -9,7 +9,7 @@ ControlManager::ControlManager(gef::Font * font)
 	_font = font;
 }
 
-ControlManager::ControlManager(gef::Font * font, std::vector<UIControl*> controls)
+ControlManager::ControlManager(gef::Font * font, std::vector<Control*> controls)
 {
 	_font = font;
 	_controls = controls;
@@ -104,7 +104,7 @@ void ControlManager::PreviousControl()
 	_controls[_selectedControl]->SetFocus(true);
 }
 
-void ControlManager::AddControl(UIControl* control)
+void ControlManager::AddControl(Control* control)
 {
 	_controls.push_back(control);
 }

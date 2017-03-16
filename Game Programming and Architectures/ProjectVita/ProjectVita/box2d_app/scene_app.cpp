@@ -15,12 +15,9 @@
 #include <MeshRenderer.h>
 
 #include <graphics\mesh.h>
-#include <GamePhysicsEvents.h>
 
 Camera camera_(gef::Vector4(0,0,10), Vector4(0,0,0), Vector4(1,1,1));
 gef::MeshInstance mInst;
-
-GamePhysicsEvents gamePhysicsEvents;
 
 SceneApp::SceneApp(gef::Platform& platform) :
 	Application(platform),
@@ -29,69 +26,164 @@ SceneApp::SceneApp(gef::Platform& platform) :
 	primitive_builder_(NULL),
 	font_(NULL),
 	input_manager(NULL),
-	control_manager(NULL),
-	audio_manager_(NULL),
-	world_(NULL)
+	audio_manager_(NULL)
 {
 
 }
 
 void SceneApp::Init()
 {
+	// 
 	sprite_renderer_ = gef::SpriteRenderer::Create(platform_);
+	// input manager for user input
 	input_manager = gef::InputManager::Create(platform_);
-	// audio_manager_ = gef::AudioManager::Create();
 	// create the renderer for draw 3D geometry
 	renderer_3d_ = gef::Renderer3D::Create(platform_);
+
+	// audio_manager_ = gef::AudioManager::Create();
 
 	// initialise primitive builder to make create some 3D geometry easier
 	primitive_builder_ = new PrimitiveBuilder(platform_);
 
-	Model* model = new Model();
-	// setup the mesh for the player
-	obj_loader_->Load("models/space_frigate_6/space_frigate_6.obj", platform_, *model);
-
-	model_Repository.insert(std::pair<string, Model*>("space_frigate_6", model));
-	
-	gef::ImageData data;
-
-	png_loader_->Load("textures/hydra.png", platform_, data);
-
-	gef::ImageData spaceData;
-
-	png_loader_->Load("textures/seamless space_0.png", platform_, spaceData);
-
-	//material->set_texture(Texture::Create(platform_, spaceData));
-	
 	
 
-	sprite_.set_texture(Texture::Create(platform_, data));
-	sprite_.set_position(50, 50, 100);
-	sprite_.set_width(data.width());
-	sprite_.set_height(data.height());
-		
 	InitFont();
 	SetupLights();
 
-	control_manager.SetFont(font_);
+	//LoadStuff
+	LoadImages();
+	LoadModels();
 
-	//UI Setup
-	button_ = new Button(sprite_, "Button1", Vector4(platform_.width() / 2, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
-	control_manager.AddControl(button_);
-	button_ = new Button(sprite_, "Button2", Vector4(platform_.width() / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
-	control_manager.AddControl(button_);
-	button_ = new Button(sprite_, "Button3", Vector4((platform_.width() * 2) / 3, platform_.height() / 2, 0), Vector4(0, 0, 0), font_);
-	control_manager.AddControl(button_);
+	//Initialize
+	PushState();
 
-	//initialize physics simulation
-	b2Vec2 gravity = b2Vec2(0, 0);
-	world_ = new b2World(gravity);
+	//sprite_.set_texture(Texture::Create(platform_, data));
+	//sprite_.set_position(50, 50, 100);
+	//sprite_.set_width(data.width());
+	//sprite_.set_height(data.height());
+	//	
+	////UI Setup	
+	//Button* button_ = new Button(*this, &SceneApp::PushState, font_, sprite);
+	//button_->Position(Vector4(platform_.width() / 2, platform_.height() / 2, 0));
+	//button_->Name("Start Game");
 
-	BuildPlayer();
-	BuildLevel();
+	////initialize physics simulation
+	//b2Vec2 gravity = b2Vec2(0, 0);
+	//world_ = new b2World(gravity);
 
-	//_player.GetComponent<MeshRenderer>()->GetMaterial()->set_texture(Texture::Create(platform_, spaceData));
-	//_player.Roll(56);
+	//BuildPlayer();
+	//BuildLevel();
+
+	//Entity& e = *_player.GetComponent<Player>();
+	//SpriteGrid* player_health_gfx_ = new SpriteGrid(*this, NULL, &sprite_, e);
+	
+
+}
+
+void SceneApp::LoadModels()
+{
+
+}
+
+void SceneApp::PushState()
+{
+	switch (index_)
+	{
+		case -1: // no state, push title screen
+		{
+			TitleScreen* title = new TitleScreen(*this, font_);
+			game_states_.push_back(title);
+			index_++;
+			break;
+		}
+		case 0: // title screen, push main menu
+		{
+			MenuScreen* menu = new MenuScreen(*this, font_);
+			game_states_.push_back(menu); 
+			index_++;
+			break;
+		}
+		case 1: // start game, push gameplay
+		{
+			MainGame* game = new MainGame(*this, font_);
+			game_states_.push_back(game);
+			index_++;
+			break;
+		}
+		case 2: // gameplay, do nothing
+		{
+			break; 
+		}
+	}
+	
+	if (index_ >= 0)
+		game_states_[index_]->Initialize();
+}
+
+void SceneApp::PopState()
+{
+	if (index_ >= 0)
+		game_states_[index_]->CleanUp();
+	game_states_.pop_back();
+	index_--;
+}
+
+void SceneApp::Quit()
+{
+	is_Running_ = false;
+}
+
+void SceneApp::LoadImages()
+{
+	gef::ImageData data;
+	gef::Sprite* sprite = new Sprite();
+
+	//Load Hydra PNG
+	png_loader_->Load("textures/glassPanel.png", platform_, data);
+	sprite->set_texture(gef::Texture::Create(platform_, data));
+	sprite->set_width(128);//data.width());
+	sprite->set_height(128);////data.height());
+	sprite->set_position(Vector4(platform_.width() / 2, platform_.height() / 2, 0));
+
+	//Store sprite for later use
+	image_Repository.insert(std::pair<string, Sprite*>("glass_button", sprite));
+
+	//Load Space Texture PNG
+	gef::ImageData space_data;
+	gef::Sprite* space_sprite = new Sprite();
+
+	png_loader_->Load("textures/seamless space_0.png", platform_, space_data);
+	space_sprite->set_texture(gef::Texture::Create(platform_, space_data));
+	space_sprite->set_width(space_data.width() - 64);
+	space_sprite->set_height(space_data.height());
+	space_sprite->set_position(Vector4(platform_.width() / 2, platform_.height() / 2, 1));
+	image_Repository.insert(std::pair<string, Sprite*>("space_background", space_sprite));
+
+	gef::ImageData galaxy_rush_data;
+	gef::Sprite* galaxy_sprite = new Sprite();
+
+	png_loader_->Load("textures/GalaxyRush.png", platform_, galaxy_rush_data);
+	galaxy_sprite->set_texture(gef::Texture::Create(platform_, galaxy_rush_data));
+	galaxy_sprite->set_width(galaxy_rush_data.width());
+	galaxy_sprite->set_height(galaxy_rush_data.height());
+	galaxy_sprite->set_position(Vector4(platform_.width() / 2, platform_.height() / 2, 1));
+	image_Repository.insert(std::pair<string, Sprite*>("title", galaxy_sprite));
+
+	gef::ImageData lightSpeed_data;
+	gef::Sprite* lightSpeed_sprite = new Sprite();
+
+	png_loader_->Load("textures/LightSpeed.png", platform_, lightSpeed_data);
+	lightSpeed_sprite->set_texture(gef::Texture::Create(platform_, lightSpeed_data));
+	lightSpeed_sprite->set_width(lightSpeed_data.width());
+	lightSpeed_sprite->set_height(lightSpeed_data.height());
+	lightSpeed_sprite->set_position(Vector4(platform_.width() / 2, platform_.height() / 2, 1));
+	image_Repository.insert(std::pair<string, Sprite*>("title_background", lightSpeed_sprite));
+}
+
+void SceneApp::LoadMaterials()
+{
+	Material* space_material = new Material();
+	//space_material->set_texture(image_Repository["space_background"]->texture());
 }
 
 void SceneApp::CleanUp()
@@ -120,57 +212,28 @@ bool SceneApp::Update(float frame_time)
 	int32 velocityIter = 6;
 	int32 positionIter = 2;
 
-	world_->Step(timeStep, velocityIter, positionIter);
-	//
-
-	//Update UI controls
-	input_manager->Update();
-	control_manager.Update(frame_time, input_manager);
-	//
 
 	//Update input
 	Keyboard* kb = input_manager->keyboard();
+	input_manager->Update();
+	camera_.Update(fps_);
+	
+	game_states_[index_]->Update(frame_time);
 
+	if (kb->IsKeyPressed(gef::Keyboard::KC_TAB))
+		PopState();
 	//if escape pressed exit application
 	if (kb->IsKeyPressed(gef::Keyboard::KC_ESCAPE))
-		return false;
-	
-	_player.Yaw(45);
-	_player.Update(frame_time);
-	_ground.Update(frame_time);
-
-	BroadPhase();
-
-	camera_.Input(kb, frame_time);
-	camera_.LockTo(&_player);
-	camera_.Update(fps_);
-	return true;
+		return is_Running_;
+	else
+		return is_Running_;
 }
 
 void SceneApp::Render()
 {
-	camera_.Render(renderer_3d_, platform_);
-
-	// draw 3d geometry
-	renderer_3d_->Begin();
-
-	//Render player components
-	_player.Render(renderer_3d_); 
-	_ground.Render(renderer_3d_);
-
-	renderer_3d_->set_override_material(NULL);
-	//-----------------------
-
-	renderer_3d_->End();
-
-	// start drawing sprites, but don't clear the frame buffer
-	sprite_renderer_->Begin(false);
-
-	//Draw controls within control manager
-	control_manager.Draw(sprite_renderer_);
-		
-	DrawHUD();
-	sprite_renderer_->End();
+	camera_.Render(renderer_3d_, platform_);		
+	
+	game_states_[index_]->Draw();
 }
 
 void SceneApp::InitFont()
@@ -189,18 +252,9 @@ void SceneApp::CleanUpFont()
 void SceneApp::DrawHUD()
 {
 	if(font_)
-	{
-		Vector4 v = _ground.GetPosition();
-		//Vector4 v1 = camera_.GetTransformMatrix().GetRow(1);
-		Vector4 v2 = _player.GetPosition();
+	{		
 		// display frame rate
-		//font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);
-		font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 400.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
-			"ground : %.1f, %.1f, %.1f", v.x(), v.y(), v.z());
-		//font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 420.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
-			//"FPS: %.1f, %.1f, %.1f", v1.x(), v1.y(), v1.z()); 
-		font_->RenderText(sprite_renderer_, gef::Vector4(700.0f, 440.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, 
-			"player : %.1f, %.1f, %.1f", v2.x(), v2.y(), v2.z());
+		font_->RenderText(sprite_renderer_, gef::Vector4(850.0f, 510.0f, -0.9f), 1.0f, 0xffffffff, gef::TJ_LEFT, "FPS: %.1f", fps_);		
 	}
 }
 
@@ -220,35 +274,17 @@ void SceneApp::SetupLights()
 	default_shader_data.AddPointLight(default_point_light);
 }
 
-void SceneApp::BroadPhase()
-{
-	b2Contact* contact = world_->GetContactList();
-
-	int count = world_->GetContactCount();
-
-	for (int i = 0; i < count; i++)
-	{
-		if (contact->IsTouching())
-		{
-			b2Body* A = contact->GetFixtureA()->GetBody();
-			b2Body* B = contact->GetFixtureB()->GetBody();
-
-			//A->ApplyForce(b2Vec2(0, 200), A->GetPosition(), true);
-		}
-	}
-}
-
-void SceneApp::BuildLevel()
-{		
-	ground_.set_mesh(primitive_builder_->GetDefaultCubeMesh());	
-	_ground.AddComponent(new MeshRenderer(_ground, &ground_));
-	_ground.AddComponent(new Rigidbody2D(_ground, world_, b2_staticBody, 0.5f, 0.5f));
-}
-
-void SceneApp::BuildPlayer()
-{ 	
-	player_.set_mesh(model_Repository["space_frigate_6"]->mesh());
-	_player.AddComponent(new MeshRenderer(_player, &player_));
-	_player.AddComponent(new Rigidbody2D(_player, world_, b2_dynamicBody, 0.5f, 0.5f));
-	_player.AddComponent(new Player(_player, *input_manager));
-}
+//void SceneApp::BuildLevel()
+//{		
+//	ground_.set_mesh(primitive_builder_->GetDefaultCubeMesh());	
+//	_ground.AddComponent(new MeshRenderer(_ground, &ground_));
+//	_ground.AddComponent(new Rigidbody2D(_ground, world_, b2_staticBody, 0.5f, 0.5f));
+//}
+//
+//void SceneApp::BuildPlayer()
+//{ 	
+//	player_.set_mesh(model_Repository["space_frigate_6"]->mesh());
+//	_player.AddComponent(new MeshRenderer(_player, &player_));
+//	_player.AddComponent(new Rigidbody2D(_player, world_, b2_dynamicBody, 0.5f, 0.5f));
+//	_player.AddComponent(new Player(_player, *input_manager));
+//}

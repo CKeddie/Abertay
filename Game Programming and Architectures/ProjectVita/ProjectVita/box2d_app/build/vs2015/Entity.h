@@ -9,6 +9,8 @@ public:
 	void Update(float deltaTime);
 	void Render(gef::Renderer3D* renderer);
 	~Entity();
+	int GetHealth() { return _health; };
 protected:
+	int _health = 3;
 };
 
