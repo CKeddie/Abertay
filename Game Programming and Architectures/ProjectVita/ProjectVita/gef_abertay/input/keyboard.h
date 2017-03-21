@@ -45,7 +45,7 @@ namespace gef
 			KC_X,
 			KC_Y,
 			KC_Z,
-			KC_F1,//26
+			KC_F1,
 			KC_F2,
 			KC_F3,
 			KC_F4,

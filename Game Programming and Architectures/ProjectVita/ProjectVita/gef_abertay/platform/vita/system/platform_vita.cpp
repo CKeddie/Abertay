@@ -961,7 +961,7 @@ buffers before starting the next frame.
     std::string PlatformVita::FormatFilename(const char* filename) const
     {
         std::string platform_filename(filename);
-        platform_filename = "host0:/"+platform_filename;
+        platform_filename = "app0:/"+platform_filename;
         return platform_filename;
     }
 

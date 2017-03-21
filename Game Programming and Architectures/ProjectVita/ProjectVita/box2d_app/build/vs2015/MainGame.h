@@ -29,5 +29,6 @@ protected:
 	void BuildEnvironment();
 
 	GameObject* background_;
+	ImageData* backgrnd_;
 };
 

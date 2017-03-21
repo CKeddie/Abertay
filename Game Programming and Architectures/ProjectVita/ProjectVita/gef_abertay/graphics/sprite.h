@@ -18,31 +18,22 @@ public:
 	/// @param[in] the position of the sprite
 	inline void set_position(const Vector4& position) { position_ = position; }
 	inline void set_position(const float x, const float y, const float z) { position_ = Vector4(x, y, z); }
-
 	/// @return the position of the sprite
 	inline const Vector4& position() const {return position_; }
-
 	/// @param[in] the width of the sprite
 	inline void set_width(const float width) { width_ = width; }
-
 	/// @return the width of the sprite
 	inline const float width() const {return width_; }
-
 	/// @param[in] the height of the sprite
 	inline void set_height(const float height) { height_ = height; }
-
 	/// @return the height of the sprite
 	inline const float height() const {return height_; }
-
 	/// @param[in] the colour of the sprite (ABGR)
 	inline void set_colour(const UInt32 colour) { colour_ = colour; }
-
 	/// @return the colour of the sprite (ABGR)
 	inline const UInt32 colour() const {return colour_; }
-
 	/// @param[in] the rotation of the sprite, in radians
 	inline void set_rotation(const float rotation) { rotation_ = rotation; }
-
 	/// @return the rotation of the sprite, in radians
 	inline const float rotation() const {return rotation_; }
 

@@ -4,11 +4,9 @@
 #define FRAMEWORK_PI 3.14159265358979323846264338327950288419716939937510f
 #define FRAMEWORK_DEG_TO_RAD ((float)FRAMEWORK_PI/180.0f)
 #define FRAMEWORK_RAD_TO_DEG ((float)180.f/(float)FRAMEWORK_PI)
-#include <math.h>
 
 namespace gef
 {
-
 	inline float DegToRad(float angleInDegrees)
 	{
 		return angleInDegrees*FRAMEWORK_DEG_TO_RAD;

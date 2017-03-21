@@ -1,5 +1,4 @@
 #include "keyboard.h"
-#include <iostream>
 
 namespace gef
 {
@@ -10,11 +9,11 @@ namespace gef
 
 	bool Keyboard::IsKeyDown(KeyCode key) const
 	{
-		return (std::cin.get() & (int)key);
+		return false;
 	}
 
 	bool Keyboard::IsKeyPressed(KeyCode key) const
-	{		
+	{
 		return false;
 	}
 

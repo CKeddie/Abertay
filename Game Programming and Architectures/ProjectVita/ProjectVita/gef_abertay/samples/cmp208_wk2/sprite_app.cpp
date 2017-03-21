@@ -1,16 +1,10 @@
 #include "sprite_app.h"
 #include <system/platform.h>
 #include <graphics/sprite_renderer.h>
-#include <graphics/texture.h>
-#include <graphics/mesh.h>
-#include <graphics/primitive.h>
-#include <assets/png_loader.h>
-#include <graphics/image_data.h>
 #include <graphics/font.h>
-#include <input/touch_input_manager.h>
-#include <maths/vector2.h>
-#include <input/sony_controller_input_manager.h>
 #include <maths/math_utils.h>
+#include <input/sony_controller_input_manager.h>
+#include <system/debug_log.h>
 
 
 SpriteApp::SpriteApp(gef::Platform& platform) :
@@ -28,18 +22,21 @@ void SpriteApp::Init()
 
 	InitFont();
 
-	my_sprite_.set_position(480.0f, 272.0f, 0.0f);
+	my_sprite_.set_position(platform_.width()*0.5f, platform_.height()*0.5f, 0.0f);
 	my_sprite_.set_width(32.0f);
 	my_sprite_.set_height(32.0f);
 
-	my_sprite_2_.set_position(0.0f, 0.0f, 0.0f);
-	my_sprite_2_.set_width(128.0f);
-	my_sprite_2_.set_height(128.0f);
+	// initialise the input manager
+	input_manager_ = gef::InputManager::Create(platform_);
 }
 
 void SpriteApp::CleanUp()
 {
 	CleanUpFont();
+
+	// destroy the input manager
+	delete input_manager_;
+	input_manager_ = NULL;
 
 	// destroy sprite renderer once you've finished using it
 	delete sprite_renderer_;
@@ -51,12 +48,37 @@ bool SpriteApp::Update(float frame_time)
 	// frame rate = 1 second / frame_delta_time
 	fps_ = 1.0f / frame_time;
 
-		// get current position of the sprite
-		gef::Vector4 sprite_position = my_sprite_.position();
+	// get the most up to data data for all input devices
+	if (input_manager_)
+	{
+		input_manager_->Update();
 
-		sprite_position.set_x(sprite_position.x() + 1);
+		// get data for all controllers
+		gef::SonyControllerInputManager* controller_input = input_manager_->controller_input();
+		if (controller_input)
+		{
+			// get data for the first controller
+			const gef::SonyController* controller = controller_input->GetController(0);
+			if (controller)
+			{
+				// take a look at the left stick x-axis
+				float left_stick_x_axis = controller->left_stick_x_axis();
 
-		my_sprite_.set_position(sprite_position);
+				gef::DebugOut("x: %f\n", left_stick_x_axis);
+			}
+		}
+	}
+
+	// move the sprite along the x-axis
+
+	// get a copy of the current position of the sprite
+	gef::Vector4 sprite_position = my_sprite_.position();
+
+	// update the x-axis on the COPY of the current position
+	sprite_position.set_x(sprite_position.x() + 1);
+
+	// update the sprite with the new position
+	my_sprite_.set_position(sprite_position);
 
 	return true;
 }
@@ -66,15 +88,8 @@ void SpriteApp::Render()
 	// draw all sprites between the Begin() and End() calls
 	sprite_renderer_->Begin();
 
-	std::vector<gef::Sprite> loadsOfSprite;
-
-	for (std::vector<gef::Sprite>::iterator sprite = loadsOfSprite.begin(); sprite != loadsOfSprite.end(); sprite++)
-		sprite_renderer_->DrawSprite(*sprite);
-
-
 	// draw my sprite here
 	sprite_renderer_->DrawSprite(my_sprite_);
-	sprite_renderer_->DrawSprite(my_sprite_2_);
 
 	DrawHUD();
 	sprite_renderer_->End();

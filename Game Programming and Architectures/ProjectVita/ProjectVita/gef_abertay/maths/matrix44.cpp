@@ -40,7 +40,7 @@ namespace gef
 
 	void Matrix44::LookAt(const Vector4& eye, const Vector4& lookat, const Vector4& up)
 	{
-		//SetIdentity();
+		SetIdentity();
 		Vector4 forward = eye - lookat;
 		forward.Normalise();
 
