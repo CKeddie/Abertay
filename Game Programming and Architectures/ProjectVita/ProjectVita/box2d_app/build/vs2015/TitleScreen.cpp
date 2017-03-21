@@ -40,8 +40,6 @@ void TitleScreen::Draw()
 	//Draw UI	
 	scene_.renderer_3d_->Begin();
 
-	
-
 	scene_.renderer_3d_->End();
 
 	scene_.sprite_renderer_->Begin(false);

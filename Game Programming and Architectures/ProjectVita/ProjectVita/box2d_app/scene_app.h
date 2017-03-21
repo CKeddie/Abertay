@@ -84,6 +84,7 @@ public:
 	//Model Storage
 	std::map <string, Model*> model_Repository;
 	std::map <string, Sprite*> image_Repository;
+	std::map <string, Texture*> texture_Repository;
 
 	float fps_;
 };

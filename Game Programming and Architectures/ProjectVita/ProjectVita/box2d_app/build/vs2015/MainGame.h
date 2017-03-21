@@ -2,7 +2,9 @@
 
 #include "GameState.h"
 #include "maths\vector4.h"
+
 #include "GameObject.h"
+#include "MeshRenderer.h"
 
 class MainGame :
 	public GameState
@@ -25,5 +27,7 @@ protected:
 	void BuildEnemies(int count);
 	void BuildPlayer();
 	void BuildEnvironment();
+
+	GameObject* background_;
 };
 

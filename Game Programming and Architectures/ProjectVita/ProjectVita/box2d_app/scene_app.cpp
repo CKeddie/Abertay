@@ -158,6 +158,7 @@ void SceneApp::LoadImages()
 	space_sprite->set_height(space_data.height());
 	space_sprite->set_position(Vector4(platform_.width() / 2, platform_.height() / 2, 1));
 	image_Repository.insert(std::pair<string, Sprite*>("space_background", space_sprite));
+	texture_Repository.insert(std::pair<string, Texture*>("space_background", Texture::Create(platform_, space_data)));
 
 	gef::ImageData galaxy_rush_data;
 	gef::Sprite* galaxy_sprite = new Sprite();

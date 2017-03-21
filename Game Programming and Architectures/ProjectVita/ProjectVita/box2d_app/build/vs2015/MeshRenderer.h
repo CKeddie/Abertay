@@ -16,6 +16,7 @@ public:
 	void Render(gef::Renderer3D* renderer);
 	~MeshRenderer();
 
+	void SetMaterial(gef::Material material) { _material = material; }
 	gef::Material* GetMaterial() { return &_material; }
 protected:
 	gef::MeshInstance& _meshInstance;
