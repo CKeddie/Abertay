@@ -202,7 +202,7 @@ namespace gef
 
 static float fbx_scaling_factor_ = 1.f;
 static const char* fbx_texture_filename_ext_ = NULL;
-static bool fbx_ignore_skinning_ = true;
+static bool fbx_ignore_skinning_ = false;
 static bool fbx_strip_texture_path_ = false;
 static FbxAMatrix fbx_axis_conversion_matrix_;
 static FbxAxisSystem fbx_user_axis_system_;
@@ -216,7 +216,7 @@ FBXLoader::FBXLoader() :
 		scaling_factor_(1.0f),
 		texture_filename_ext_(NULL),
 		strip_texture_path_(false),
-		ignore_skinning_(true),
+		ignore_skinning_(false),
 		axis_system_set_(false)
 
 {
@@ -1379,9 +1379,9 @@ void AddSkeleton(FbxNode& node, FbxScene& fbx_scene, Scene& scene, Skeleton* ske
 		joint.parent = -1;
 	Int32 joint_index = skeleton->AddJoint(joint);
 
-//	printf("\n%d: %s 0x%x\n", joint_index, node_name, joint.name_id);
-//	printf("%f %f %f\n", joint_pose.translation().x(), joint_pose.translation().y(), joint_pose.translation().z());
-//	printf("%f %f %f %f\n", joint_pose.rotation().x, joint_pose.rotation().y, joint_pose.rotation().z, joint_pose.rotation().w);
+	printf("\n%d: %s 0x%x\n", joint_index, node_name, joint.name_id);
+	printf("%f %f %f\n", joint_pose.translation().x(), joint_pose.translation().y(), joint_pose.translation().z());
+	printf("%f %f %f %f\n", joint_pose.rotation().x, joint_pose.rotation().y, joint_pose.rotation().z, joint_pose.rotation().w);
 
 	// go through children and add them to the current skeleton
 	for(Int32 child_index = 0; child_index<node.GetChildCount();++child_index)
@@ -1599,7 +1599,7 @@ void AddAnimation(FbxNode& fbx_node, FbxAnimLayer& fbx_anim_layer, class Animati
 				key_iter->value = GetVector3AnimCurveValue(key_iter->time, fbx_node.LclTranslation, fbx_anim_layer);
 				key_iter->value *= fbx_scaling_factor_;
 
-				//gef::DebugOut("%f: %f %f %f\n", key_iter->time, key_iter->value.x(), key_iter->value.y(), key_iter->value.z());
+				gef::DebugOut("%f: %f %f %f\n", key_iter->time, key_iter->value.x(), key_iter->value.y(), key_iter->value.z());
 			}
 		}
 		anim.AddNode(anim_node);

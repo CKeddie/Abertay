@@ -43,6 +43,13 @@ public:
 							// for ATRAC9, this member holds the configData value
 };
 
+struct VolumeInfo
+{
+	float volume;
+	float pan;
+
+	VolumeInfo();
+};
 
 struct SamplePlayerCallbackData
 {
@@ -92,8 +99,8 @@ public:
 	inline SceNgsHVoice& music_voice() { return music_voice_; }
 	inline SceNgsHVoice& master_voice() { return master_voice_; }
 	inline void set_sample_voice_playing(const UInt32 voice_index, const bool is_playing) { sample_voice_playing_[voice_index] = is_playing; }
-	bool sample_voice_playing(const UInt32 voice_index) { return sample_voice_playing_[voice_index]; }
-	bool sample_voice_looping(const UInt32 voice_index) { return sample_voice_looping_[voice_index]; }
+	inline bool sample_voice_playing(const UInt32 voice_index) { return sample_voice_playing_[voice_index]; }
+	inline bool sample_voice_looping(const UInt32 voice_index) { return sample_voice_looping_[voice_index]; }
 	inline bool audio_update_thread_running() const { return audio_update_thread_running_; }
 	inline const SceNgsHSynSystem& system_handle() const { return system_handle_; }
 public:

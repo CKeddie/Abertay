@@ -15,7 +15,6 @@ MainGame::~MainGame()
 
 void MainGame::Initialize()
 {
-	scene_.png_loader_->Load("textures/seamless space_0.png", scene_.platform(), *backgrnd_);
 	BuildEnvironment();
 }
 

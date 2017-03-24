@@ -15,6 +15,7 @@ public:
 
 	const Vector4 operator - (const Vector4& _vec) const;
 	const Vector4 operator + (const Vector4& _vec) const;
+	const bool operator == (const Vector4& _vec) const;
 	Vector4& operator -= (const Vector4& _vec);
 	Vector4& operator += (const Vector4& _vec);
 	const Vector4 operator * (const float _scalar) const;

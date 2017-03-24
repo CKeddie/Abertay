@@ -9,7 +9,6 @@
 #include <sceerror.h>
 #include <libdbg.h>
 
-
 #define FILE_READ_CHUNK_SIZE	(64 * 1024)
 #define AUDIO_UPDATE_THREAD_STACK_SIZE	(8 * 1024)
 
@@ -159,12 +158,6 @@ static void StreamCallback( const SceNgsCallbackInfo *pCallbackInfo )
 namespace gef
 {
 
-	AudioManager* AudioManager::Create()
-	{
-		return new AudioManagerVita();
-	}
-
-
 SoundInfo::SoundInfo() :
 	pData(NULL),
 		nNumBytes(0),
@@ -192,7 +185,11 @@ void SoundInfo::CleanUp()
 }
 
 
-
+VolumeInfo::VolumeInfo() :
+	volume(1.0f),
+	pan(0.0f)
+{
+}
 
 AudioManagerVita::AudioManagerVita(const UInt32 max_simultaneous_voices) :
 audio_update_thread_running_(false),
@@ -1161,21 +1158,8 @@ Int32 AudioManagerVita::SetPatchChannelVolumes(SceNgsHPatch hPatchHandle, const 
 		return returnCode;
 	}
 
-	float volume = volume_info.volume;
-	float pan = volume_info.pan;
-
-	if (volume < 0.0f)
-		volume = 0.0f;
-	else if (volume_info.volume > 1.0f)
-		volume = 1.0f;
-
-	if (pan < -1.0f)
-		pan = -1.0f;
-	else if (pan > 1.0f)
-		pan = 1.0f;
-
-	float source_volume_left = volume*(pan <= 0.0f ? 1.0f: 1.0f-pan);
-	float source_volume_right = volume*(pan >= 0.0f ? 1.0f: 1.0f+pan);
+	float source_volume_left = volume_info.volume*(volume_info.pan <= 0.0f ? 1.0f: 1.0f-volume_info.pan);
+	float source_volume_right = volume_info.volume*(volume_info.pan >= 0.0f ? 1.0f: 1.0f+volume_info.pan);
 	if (patchRouteInfo.nOutputChannels == 1) {
 		if (patchRouteInfo.nInputChannels == 1) {
 			patchRouteInfo.vols.m[0][0] = source_volume_left;	// left to left

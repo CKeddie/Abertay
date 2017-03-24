@@ -127,10 +127,10 @@ int main(int argc, char* argv[])
 				}
 				break;
 
-			case 'e':
-				if(stricmp(&argv[arg_num][1], "enable-skinning") == 0)
+			case 'i':
+				if(stricmp(&argv[arg_num][1], "ignore-skinning") == 0)
 				{
-					fbx_loader.set_ignore_skinning(false);
+					fbx_loader.set_ignore_skinning(true);
 				}
 				break;
 

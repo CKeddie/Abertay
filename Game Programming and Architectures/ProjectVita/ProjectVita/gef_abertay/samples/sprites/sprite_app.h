@@ -42,8 +42,6 @@ private:
 
 	
 	gef::Sprite my_sprite_;
-
-	gef::Sprite my_sprite_2_;
 };
 
 #endif // _sprite_app_H
