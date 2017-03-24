@@ -33,11 +33,6 @@ void Enemy::Update(float gametime)
 					current_health_--;
 				}
 			}
-			else
-			{
-				b2Vec2 a = body->GetPosition();
-				//				body->SetLinearVelocity()
-			}
 		}
 		else if (objectB == &this->_gameObject)
 		{
