@@ -15,6 +15,7 @@
 #include <MeshRenderer.h>
 
 #include <graphics\mesh.h>
+
 #include <sstream>
 
 Camera camera_(gef::Vector4(0,0,10), Vector4(0,0,0), Vector4(1,1,1));
@@ -173,10 +174,11 @@ void SceneApp::LoadImages()
 
 void SceneApp::LoadModels()
 {
-	SCNLoader("space_frigate_6", "space_frigate", "space_frigate_color");
-	SCNLoader("dark_fighter_6", "dark_fighter", "dark_fighter_color");
-	SCNLoader("small_fighter_1", "small_fighter", "small_fighter_color");
+	SCNLoader("space_frigate_6"   , "space_frigate", "space_frigate_color");
+	SCNLoader("dark_fighter_6"	  , "dark_fighter" , "dark_fighter_color" );
+	SCNLoader("small_fighter_1"   , "small_fighter", "small_fighter_color");
 	SCNLoader("asteroid_crystal_6", "asteroid", "asteroid_crystal");
+	SCNLoader("Bomb", "torpedo", "torpedo_txr");
 }
 
 void SceneApp::SCNLoader(std::string filename, std::string repositoryName, std::string textureRepoName)

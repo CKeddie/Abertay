@@ -15,12 +15,15 @@ class MeshRenderer :
 {
 public:
 	MeshRenderer(GameObject& gameObject, gef::Mesh* mesh, gef::Material* material, gef::Vector4 rotation);
+	MeshRenderer(GameObject& gameObject, gef::Mesh* mesh, gef::Material* material, gef::Vector4 rotation, gef::Vector4 position);
 	void TiltZ(float radians);
 	void TiltY(float radians);
 	void TiltX(float radians);
 	//MeshRenderer(GameObject& gameObject, gef::Model* model);
 	void Update(float deltaTime);
 	void Render(gef::Renderer3D* renderer);
+	bool IsDrawable() { return is_drawable_; }
+	void SetDrawable(bool value) { is_drawable_ = value; }
 	~MeshRenderer();
 
 	void SetMaterial(gef::Material* material) { _material = material; }
@@ -28,6 +31,7 @@ public:
 protected:
 	class gef::MeshInstance* _meshInstance;
 	class gef::Material* _material;
-	gef::Matrix44 transform_, pitch_, yaw_, roll_;
+	gef::Matrix44 transform_, pitch_, yaw_, roll_, translation_;
+	bool is_drawable_ = true;
 };
 

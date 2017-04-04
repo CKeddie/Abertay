@@ -247,7 +247,9 @@
     </ClCompile>
     <ClCompile Include="..\..\scene_app.cpp" />
     <ClCompile Include="..\..\TitleScreen.cpp" />
+    <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Button.h" />
@@ -266,7 +268,9 @@
     <ClInclude Include="..\..\Rigidbody2D.h" />
     <ClInclude Include="..\..\scene_app.h" />
     <ClInclude Include="..\..\TitleScreen.h" />
+    <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

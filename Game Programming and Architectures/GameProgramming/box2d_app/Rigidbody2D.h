@@ -9,7 +9,8 @@ enum CollisionBitmask
 	BOUNDS = 0x0001,
 	ENEMY = 0x0002,
 	PLAYER = 0x0004,
-	ASTEROID = 0x0008
+	ASTEROID = 0x0008,
+	PROJECTILE = 0x0010
 };
 
 class Rigidbody2D :
@@ -23,6 +24,7 @@ public:
 	void SetPosition(gef::Vector4 position) { _body->SetTransform(b2Vec2(position.x(), position.y()), 0.0f); }
 	void SetDrag(float scale);
 	void SetVelocity(float x, float y) { _body->SetLinearVelocity(b2Vec2(x, y)); }
+	void SetAngularVelocity(float amount) { _body->SetAngularVelocity(amount); }
 	b2Vec2 GetVelocity() { return _body->GetLinearVelocity(); }
 	
 	b2Body* GetBody() { return _body; }

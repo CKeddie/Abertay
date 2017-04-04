@@ -47,12 +47,12 @@ void GameObject::Update(float deltaTime)
 
 	rotation_z.SetIdentity();
 	rotation_z.RotationZ(gef::DegToRad(v_rotation.z()));
-
+	
 	scale_.Scale(v_scale);
 
 	transform_ = translate_ * rotation_x * rotation_y * rotation_z * scale_;
 	
-	for (auto& x : _components)//; i < _components.size(); i++)
+	for (auto& x : _components)
 	{
 		x.second->Update(deltaTime);		
 	}
@@ -60,7 +60,7 @@ void GameObject::Update(float deltaTime)
 
 void GameObject::Render(Renderer3D * renderer)
 {
-	for (auto& x : _components)//; i < _components.size(); i++)
+	for (auto& x : _components)
 	{
 		x.second->Render(renderer);
 	}

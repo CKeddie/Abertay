@@ -6,6 +6,9 @@
 #include <Enemy.h>
 #include <float.h>
 #include <sstream>
+#include <Entity.h>
+#include <Asteroid.h>
+#include <Projectile.h>
 using namespace std;
 
 MainGame::MainGame(SceneApp& scene, gef::Font* font)
@@ -24,23 +27,36 @@ void MainGame::Initialize()
 	BuildEnvironment();
 	BuildPlayer();
 	BuildEnemy();
+	BuildAsteroid();
+	BuildTorpedo();
+
+	enemy_spawns_.resize(5);
+	enemy_spawns_[0] = gef::Vector4( bounds_x,     bounds_y,     0);
+	enemy_spawns_[1] = gef::Vector4( bounds_x / 2, bounds_y,     0);
+	enemy_spawns_[2] = gef::Vector4(-bounds_x,	   bounds_y,     0);
+	enemy_spawns_[3] = gef::Vector4(-bounds_x,     bounds_y / 2, 0);
+	enemy_spawns_[4] = gef::Vector4( bounds_x,     bounds_y / 2, 0);
 
 	player_object->SetRotation(Vector4(0, 0, 0));
+
 	player_transfer = player_spawn_;
 }
 
 void MainGame::Update(float gameTime)
 {
-	if (spawn_timer_ < spawn_time)
+	spawn_timer_ += gameTime;
+	if (spawn_timer_ >= spawn_time)
 	{
-		/*spawn_timer_+=gameTime;
-		player_transfer.Lerp(player_spawn_, player_start_, 0.25F);
-		player_object->GetComponent<Rigidbody2D>()->SetPosition(player_transfer);*/
+		spawn_timer_ = 0;
+		int i = rand() % enemy_spawns_.size();
+		//asteroid_object->GetComponent<Asteroid>()->Reset(enemy_spawns_[i]);
 	}
 
 	world_->Step(1, 1, 1);
 	player_object->Update(gameTime);
 	enemy_object->Update(gameTime);
+	asteroid_object->Update(gameTime);
+	//torpedo_object->Update(gameTime);
 
 	if (scene_.input_manager->keyboard()->IsKeyDown(gef::Keyboard::KC_A))
 		scroll_speed_.x = Lerp(scroll_speed_.x, scroll_speed_.y, 5 * gameTime);
@@ -53,6 +69,11 @@ void MainGame::Update(float gameTime)
 
 	distance_ += 2 * gameTime;
 	control_manager_->Update(gameTime, scene_.input_manager);
+
+	if (!player_object->GetComponent<Player>()->IsAlive())
+	{
+		scene_.PopState();
+	}
 }
 
 void MainGame::Draw()
@@ -69,7 +90,9 @@ void MainGame::Draw()
 
 	player_object->Render(scene_.renderer_3d_);
 	enemy_object->Render(scene_.renderer_3d_);
-	
+	asteroid_object->Render(scene_.renderer_3d_);
+	torpedo_object->Render(scene_.renderer_3d_);
+
 	scene_.renderer_3d_->End();
 
 	scene_.sprite_renderer_->Begin(false);
@@ -87,26 +110,53 @@ void MainGame::CleanUp()
 	delete player_object;
 	player_object = NULL;
 
-	delete space_background_;
-	space_background_ = NULL;
+	//delete space_background_;
+	//space_background_ = NULL;
 }
 
 void MainGame::BuildEnemies(int count)
 {
+
+}
+
+void MainGame::BuildTorpedo()
+{
+	torpedo_object = new GameObject("Torpedo", Vector4(0,0,0));
+	torpedo_object->AddComponent(new MeshRenderer(*torpedo_object,
+		scene_.mesh_repository["torpedo"],
+		new Material(),
+		Vector4(0, 0, 90), 
+		Vector4(0,0, 50)));
+	torpedo_object->AddComponent(new Rigidbody2D(*torpedo_object, world_, b2_dynamicBody, 1, 0.5f, PROJECTILE, ENEMY | ASTEROID));
+	torpedo_object->AddComponent(new Projectile(*torpedo_object));
 }
 
 void MainGame::BuildPlayer()
 {
 	player_object = new GameObject("Player", player_spawn_, gef::Vector4(0,0,0));
 	player_object->AddComponent(new MeshRenderer(*player_object,
-		scene_.mesh_repository["space_frigate"], 
+		scene_.mesh_repository["space_frigate"],
 		scene_.material_repository["space_frigate_color"], 
 		gef::Vector4(0, 0, -90)));
 
-	player_object->AddComponent(new Rigidbody2D(*player_object, world_, b2_dynamicBody, 1, 1, PLAYER, ENEMY | BOUNDS));
+
+	player_object->AddComponent(new Rigidbody2D(*player_object, world_, b2_dynamicBody, 1, 1, PLAYER, ENEMY | BOUNDS | ASTEROID));
 	player_object->AddComponent(new Player(*player_object, *scene_.input_manager));
 
 	player_ = (player_object->GetComponent<Player>());
+}
+
+void MainGame::BuildAsteroid()
+{
+	asteroid_object = new GameObject("Asteroid", Vector4(0, 0, 0));
+	asteroid_object->AddComponent(new MeshRenderer(
+		*asteroid_object,
+		scene_.mesh_repository["asteroid"],
+		scene_.material_repository["asteroid_crystal"],
+		gef::Vector4(0, 0, 0)));
+
+	asteroid_object->AddComponent(new Rigidbody2D(*asteroid_object, world_, b2_dynamicBody, 1, 1, ASTEROID, PLAYER | ENEMY));
+	asteroid_object->AddComponent(new Asteroid(*asteroid_object));
 }
 
 void MainGame::BuildEnemy()
@@ -146,7 +196,7 @@ void MainGame::BuildEdge(b2World* world, b2Vec2 v0, b2Vec2 v1)
 	fixture->density = 1.0f;
 	fixture->shape = edge;
 	fixture->filter.categoryBits = BOUNDS;
-	fixture->filter.maskBits = PLAYER;
+	fixture->filter.maskBits     = PLAYER;
 
 	b2Body* wall = world_->CreateBody(bDef);
 	wall->CreateFixture(fixture);

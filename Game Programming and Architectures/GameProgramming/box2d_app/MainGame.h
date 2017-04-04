@@ -24,7 +24,9 @@ protected:
 	std::vector<GameObject*> enemies_;
 	
 	void BuildEnemies(int count);
+	void BuildTorpedo();
 	void BuildPlayer();
+	void BuildAsteroid();
 	void BuildEnemy();
 	void BuildEnvironment();
 	void BuildEdge(b2World * world, b2Vec2 v0, b2Vec2 v1);
@@ -33,8 +35,11 @@ protected:
 	gef::Vector2 scroll_speed_ = Vector2(0, 0.5f);
 	Sprite* space_background_;
 	Player* player_;
+
 	GameObject* player_object;
 	GameObject* enemy_object;
+	GameObject* asteroid_object;
+	GameObject* torpedo_object;
 
 	gef::Vector4 player_start_ = Vector4(0, -1, 0);
 	gef::Vector4 player_spawn_ = Vector4(0, -5, 0);
@@ -45,13 +50,5 @@ protected:
 	float bounds_x = 10, bounds_y = 6;
 
 	b2World* world_;
-
-	//gef::Vector4 enemy_spawns_[3] =
-	//{
-	//	Vector4(-2, 2, 0),
-	//	Vector4( 0, 2, 0),
-	//	Vector4( 2, 2, 0),
-	//};
-	//Vector4 enemy_spawns_ = Vector4(2, 2, 0);
 };
 

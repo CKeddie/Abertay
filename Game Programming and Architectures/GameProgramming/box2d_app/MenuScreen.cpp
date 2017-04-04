@@ -20,11 +20,13 @@ void MenuScreen::Initialize()
 	start_game_ = new Button(scene_, &SceneApp::PushState, control_manager_->GetFont(), *scene_.image_repository["glass_button"]);
 	start_game_->Position(Vector4((scene_.platform().width() / 3), (scene_.platform().height() / 4) * 2, 0));
 	start_game_->Text("Start Game");
+	start_game_->SetFocus(true);
 	control_manager_->AddControl(start_game_);
 
 	quit_ = new Button(scene_, &SceneApp::Quit, control_manager_->GetFont(), *scene_.image_repository["glass_button"]);
 	quit_->Position(Vector4((scene_.platform().width() / 3), (scene_.platform().height() / 4) * 3, 0));
-	quit_->Text("Quit");
+	quit_->Text("Quit");	
+	quit_->SetFocus(false);
 	control_manager_->AddControl(quit_);
 }
 
@@ -61,6 +63,6 @@ void MenuScreen::CleanUp()
 	delete quit_;
 	quit_ = NULL;
 
-	delete space_background_;
-	space_background_ = NULL;
+	//delete space_background_;
+	//space_background_ = NULL;
 }

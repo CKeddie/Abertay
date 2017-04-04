@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "maths\math_utils.h"
 #include "GameObject.h"
+#include "Entity.h"
 
 Enemy::Enemy(GameObject& gameObject) : Entity(gameObject)
 {
@@ -8,8 +9,9 @@ Enemy::Enemy(GameObject& gameObject) : Entity(gameObject)
 	body = _gameObject.GetComponent<Rigidbody2D>()->GetBody();
 }
 
-void Enemy::Update(float gametime)
+void Enemy::Update(float gametime) 
 {	
+	Entity::Update(gametime);
 	//go through contacts
 	b2ContactEdge* contacts = body->GetContactList();
 	if (contacts)

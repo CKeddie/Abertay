@@ -26,6 +26,7 @@ void Player::OnCollisionExit()
 
 void Player::Update(float deltaTime)
 {
+	Entity::Update(deltaTime);
 	//go through contacts
 	b2ContactEdge* contacts = body->GetContactList();
 	if (contacts)
@@ -41,11 +42,13 @@ void Player::Update(float deltaTime)
 		{
 			if (objectA->Tag == "Player" && objectB->Tag == "Enemy")
 			{
+				current_health_--;
 				//body->ApplyForceToCenter(b2Vec2(0, 20), true);
 			}
 			//determine if contact A is a player and contact B is a ground object
-			else if (objectA->Tag == "Player" && objectB->Tag == "Ground")
+			else if (objectA->Tag == "Player" && objectB->Tag == "Asteroid")
 			{
+				current_health_--;
 				//body->ApplyForceToCenter(b2Vec2(0, 20), true);
 			}
 		}
