@@ -4,8 +4,10 @@ class Asteroid :
 	public Entity
 {
 public:
-	Asteroid(GameObject & parent);
+	Asteroid();
 	void Update(float);
+
+	void CollisionCheck();
 
 	~Asteroid();
 };

@@ -1,11 +1,18 @@
 #pragma once
-#include "Component.h"
+#include "Entity.h"
+
 class Projectile :
-	public Component
+	public Entity
 {
 public:
-	Projectile(GameObject & parent);
+	Projectile();
 	void Update(float gameTime);
+	void CollisionCheck();
 	~Projectile();
+	void SetParentTransform(Transform* parent) { parent_transform = parent; }
+	void Fire() { is_fired = true; }
+private:
+	bool is_fired = false;
+	Transform* parent_transform;
 };
 

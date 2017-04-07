@@ -5,11 +5,8 @@
 
 #include "box2d\Box2D.h"
 
-#include "GameObject.h"
 #include "Entity.h"
-
-#include "MeshRenderer.h"
-#include "Rigidbody2D.h"
+#include "Projectile.h"
 
 class GameObject;
 class RigidBody2D;
@@ -19,19 +16,15 @@ class Player :
 	public Entity
 {
 public:
-	Player(GameObject & parent, gef::InputManager & inputManager);
-	void OnCollisionEnter();
-	void OnCollisionExit();
+	Player(gef::InputManager & inputManager);
+	~Player();
 	void Update(float deltaTime);
 	void Render(gef::Renderer3D* renderer);
-	
-	~Player();
+	void CollisionCheck();
+	void SetProjectile(Projectile * projectile);
 protected:
 	gef::InputManager& _inputManager;
-	Rigidbody2D* rigidbody;
-	MeshRenderer* meshRenderer;
-	b2Body* body;
-
 	float current_angle_ = 0, new_angle = 0, left_angle_ = 25, right_angle_ = -25, initial_angle_ = 0;
+	Projectile* projectile_;
 };
 

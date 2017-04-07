@@ -219,24 +219,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Button.cpp" />
-    <ClCompile Include="..\..\Camera.cpp" />
-    <ClCompile Include="..\..\Component.cpp" />
-    <ClCompile Include="..\..\Control.cpp" />
-    <ClCompile Include="..\..\ControlManager.cpp" />
-    <ClCompile Include="..\..\Entity.cpp" />
-    <ClCompile Include="..\..\GameObject.cpp" />
     <ClCompile Include="..\..\GameState.cpp" />
-    <ClCompile Include="..\..\MainGame.cpp" />
     <ClCompile Include="..\..\main_d3d11.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|PSVita'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|PSVita'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\MenuScreen.cpp" />
-    <ClCompile Include="..\..\MeshRenderer.cpp" />
-    <ClCompile Include="..\..\Player.cpp" />
     <ClCompile Include="..\..\primitive_builder.cpp" />
-    <ClCompile Include="..\..\Rigidbody2D.cpp" />
+    <ClCompile Include="..\..\scene_app.cpp" />
     <ClCompile Include="..\..\main_vita.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -245,32 +234,46 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\scene_app.cpp" />
-    <ClCompile Include="..\..\TitleScreen.cpp" />
     <ClCompile Include="Asteroid.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Control.cpp" />
+    <ClCompile Include="ControlManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MenuScreen.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Button.h" />
-    <ClInclude Include="..\..\Camera.h" />
-    <ClInclude Include="..\..\Component.h" />
-    <ClInclude Include="..\..\Control.h" />
-    <ClInclude Include="..\..\ControlManager.h" />
-    <ClInclude Include="..\..\Entity.h" />
-    <ClInclude Include="..\..\GameObject.h" />
     <ClInclude Include="..\..\GameState.h" />
-    <ClInclude Include="..\..\MainGame.h" />
-    <ClInclude Include="..\..\MenuScreen.h" />
-    <ClInclude Include="..\..\MeshRenderer.h" />
-    <ClInclude Include="..\..\Player.h" />
     <ClInclude Include="..\..\primitive_builder.h" />
-    <ClInclude Include="..\..\Rigidbody2D.h" />
     <ClInclude Include="..\..\scene_app.h" />
-    <ClInclude Include="..\..\TitleScreen.h" />
     <ClInclude Include="Asteroid.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Control.h" />
+    <ClInclude Include="ControlManager.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScreens.h" />
+    <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MenuScreen.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="TitleScreen.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

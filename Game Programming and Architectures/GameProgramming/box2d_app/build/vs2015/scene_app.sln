@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scene_app", "scene_app.vcxproj", "{E10EAFBA-8040-483F-BCE8-D31D2545AC1B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -42,6 +42,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "box2d", "box2d\box2d.vcxproj", "{D2F7792B-CF91-49B9-A473-2B13D32BECD0}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|PSVita = Debug|PSVita
 		Debug|x64 = Debug|x64

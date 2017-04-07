@@ -1,19 +1,20 @@
 #ifndef _SCENE_APP_H
 #define _SCENE_APP_H
 
-#include <system\application.h>
 
-#include <map>
-#include <vector>
+#include <system/application.h>
+#include <system/platform.h>
+#include <system/debug_log.h>
 
-#include "primitive_builder.h"
+#include <graphics/mesh_instance.h>
+#include <graphics/sprite_renderer.h>
+#include <graphics/renderer_3d.h>
+#include <graphics/font.h>
+#include <graphics/scene.h>
+#include <graphics\mesh.h>
 
-#include <graphics\model.h>
-#include <graphics\mesh_instance.h>
-#include <graphics\sprite_renderer.h>
-#include <graphics\sprite.h>
-#include <graphics\image_data.h>
-#include <graphics\texture.h>
+#include <maths/vector2.h>
+#include <maths/math_utils.h>
 
 #include "assets\obj_loader.h"
 #include "assets\png_loader.h"
@@ -22,17 +23,11 @@
 #include "input\keyboard.h"
 
 #include "box2d\Box2D.h"
+#include <vector>
 
-#include "Camera.h"
-#include "GameObject.h"
+#include "primitive_builder.h"
 
-#include <TitleScreen.h>
-#include <MenuScreen.h>
-#include <MainGame.h>
-
-#include <graphics/scene.h>
-#include <animation/skeleton.h>
-#include <animation/animation.h>
+#include "GameScreens.h"
 
 // FRAMEWORK FORWARD DECLARATIONS
 namespace gef
@@ -53,24 +48,35 @@ public:
 	bool Update(float frame_time);
 	void Render();
 
+	void PushState();
+	void PopState();
+	void Quit();
+
+	gef::Mesh* GetMesh(std::string id) { return mesh_repository[id]; }
+	gef::Sprite* GetImage(std::string id) { return image_repository[id]; }
+	gef::Material* GetMaterial(std::string id) { return material_repository[id]; }
+	
+	gef::AudioManager* GetAudioManager() { return audio_manager_; }
+	gef::SpriteRenderer* GetSpriteRenderer() { return sprite_renderer_; }
+	gef::Font* GetFont() { return font_; }
+	gef::InputManager* GetInputManager() { return input_manager; }
+	gef::Renderer3D* GetRenderer() { return renderer_3d_; }
+
+private:
 	void InitFont();
+	void CleanUpFont();
+	void DrawHUD();
+	void SetupLights();
+
+	void LoadImages();
 
 	void LoadModels();
-	void LoadImages();
-	void LoadMaterials();
 
 	void SCNLoader(std::string filename, std::string repositoryName, std::string textureRepoName);
 
-	void PushState();
-	void PopState();
+	void SpriteLoader(std::string path, std::string repositoryName);
 
-	void Quit();
-		
-	void CleanUpFont();
-	void SetupLights();
-	void DrawHUD();
 
-	//Game components
 	gef::AudioManager* audio_manager_;
 	gef::SpriteRenderer* sprite_renderer_;
 	gef::Font* font_;
@@ -81,17 +87,17 @@ public:
 	gef::PNGLoader* png_loader_ = new gef::PNGLoader();
 	PrimitiveBuilder* primitive_builder_;
 
+	float fps_;
+
 	//GameState Management
 	std::vector<GameState*> game_states_;
+
 	int index_ = -1;
 	bool is_Running_ = true;
 
-	//Model Storage
-	std::map <string, Mesh*> mesh_repository;
-	std::map <string, Sprite*> image_repository;
-	std::map <string, Material*> material_repository;
-
-	float fps_;
+	std::map <std::string, gef::Mesh*> mesh_repository;
+	std::map <std::string, gef::Sprite*> image_repository;
+	std::map <std::string, gef::Material*> material_repository;
 };
 
 #endif // _SCENE_APP_H

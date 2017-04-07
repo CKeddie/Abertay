@@ -42,8 +42,6 @@ public:
 	/// @param[in] materials	Pointer to material used to render all faces. NULL is valid.
 	gef::Mesh* CreateSphereMesh(const float radius, const int phi, const int theta, gef::Vector4 centre = gef::Vector4(0.0f, 0.0f, 0.0f), gef::Material* material = NULL);
 
-	gef::Mesh* CreatePlaneMesh(const float sizeX, const float sizeY, gef::Vector4 centre = gef::Vector4(0.0f, 0.0f, 0.0f), gef::Material* material = NULL);
-
 
 	/// @brief Get the default cube mesh.
 	/// @return The mesh for the default cube.
@@ -83,7 +81,6 @@ protected:
 
 	gef::Mesh* default_cube_mesh_;
 	gef::Mesh* default_sphere_mesh_;
-	gef::Mesh* default_plane_mesh_;
 
 	gef::Material red_material_;
 	gef::Material blue_material_;
