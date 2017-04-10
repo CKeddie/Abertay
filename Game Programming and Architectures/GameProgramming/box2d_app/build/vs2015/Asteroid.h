@@ -5,6 +5,7 @@ class Asteroid :
 {
 public:
 	Asteroid();
+	Asteroid(gef::Vector4 spawn);
 	void Update(float);
 
 	void CollisionCheck();

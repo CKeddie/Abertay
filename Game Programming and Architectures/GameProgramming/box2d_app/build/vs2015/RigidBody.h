@@ -28,9 +28,17 @@ public:
 	void ApplyForce(float x, float y);
 	b2Vec2 GetVelocity() { return _body->GetLinearVelocity(); }
 	b2Body* GetBody() { return _body; }
+
+	b2Filter GetFilter() { return _filterData; }
+	void SetFilterMask(uint16 mask) { _filterData.maskBits = mask; ApplyFilter(); }
+	void SetFilterCategory(uint16 category) { _filterData.categoryBits = category; ApplyFilter(); }
+	void SetFilter(b2Filter filter) { _filterData = filter; ApplyFilter(); }
+
 	CollisionBitmask GetCollisionMask() { return bitmask_; }
 	CollisionBitmask GetCollisionCategory() { return category_; }
-
+	void ToggleMask(uint16 collisionType);
+	void ResetMask();
+	
 	CollisionBitmask GetCurrentColliding() { return current_colliding_; }
 	void SetCurrentColliding(CollisionBitmask mask) { current_colliding_ = mask; }
 protected:
@@ -40,8 +48,15 @@ protected:
 	b2PolygonShape shape;
 	b2FixtureDef fixture;
 	b2Vec2 _velocity;
+	b2Filter _filterData;
 	CollisionBitmask bitmask_;
 	CollisionBitmask category_;
 	CollisionBitmask current_colliding_ = NONE;
+	CollisionBitmask last_collision_ = NONE;
+private:
+	void ApplyFilter()
+	{
+		_body->GetFixtureList()->SetFilterData(_filterData);
+	}
 };
 

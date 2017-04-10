@@ -6,6 +6,9 @@
 Asteroid::Asteroid() : Entity()
 {
 }
+Asteroid::Asteroid(gef::Vector4 spawn) : Entity(spawn)
+{
+}
 
 void Asteroid::Update(float gameTime)
 {
@@ -29,21 +32,25 @@ void Asteroid::CollisionCheck()
 	case PLAYER:
 	{
 		current_health_--;
+		rigid_body_->ToggleMask((uint16)rigid_body_->GetCollisionMask());
 		break;
 	}
 	case ENEMY:
 	{
 		current_health_--;
+		rigid_body_->ToggleMask((uint16)rigid_body_->GetCollisionMask());
 		break;
 	}
 	case PROJECTILE:
 	{
 		current_health_--;
+		rigid_body_->ToggleMask((uint16)rigid_body_->GetCollisionMask());
 		break;
 	}
 	case NONE:
 		break;
 	}
+
 }
 
 

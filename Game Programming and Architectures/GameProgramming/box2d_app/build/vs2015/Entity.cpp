@@ -5,6 +5,16 @@ Entity::Entity()
 {
 	mesh_renderer_ = new MeshRenderer();
 	rigid_body_ = new RigidBody();
+	score_ = 0;
+}
+
+Entity::Entity(gef::Vector4 spawn) 
+	: GameObject()
+{
+	spawn_point_ = spawn;	
+	mesh_renderer_ = new MeshRenderer();
+	rigid_body_ = new RigidBody();
+	score_ = 0;
 }
 
 
@@ -17,7 +27,7 @@ void Entity::Update(float gameTime)
 	// update after rigidbody calculations to make sure
 	// the transform updates correctly
 	GameObject::Update(gameTime); 
-
+	
 	//check to see if rigidbody exists
 	if(rigid_body_)
 		rigid_body_->Update(this);
@@ -28,10 +38,18 @@ void Entity::Update(float gameTime)
 
 	if (IsIndestructable())
 		indestructable_timer_+=gameTime;
+
 	if (indestructable_timer_ > indestructable_limit_)
 	{
 		indestructable_timer_ = 0;
 		SetIndestructable(false);
+		rigid_body_->ResetMask();
+	}
+
+	if (!IsAlive() && !is_indestructable_)
+	{
+		rigid_body_->ToggleMask(rigid_body_->GetCollisionMask());
+		is_indestructable_ = true;
 	}
 }
 
@@ -39,7 +57,7 @@ void Entity::CollisionCheck()
 {
 	//go through contacts
 	b2ContactEdge* contacts = rigid_body_->GetBody()->GetContactList();
-
+	rigid_body_->SetCurrentColliding(NONE);
 	if (contacts)
 	{
 		uint16 flag = 0;
@@ -60,11 +78,8 @@ void Entity::CollisionCheck()
 		else//if a and b are the same
 			flag = A & B;
 
-		CollisionBitmask debug = (CollisionBitmask)(flag);
 		rigid_body_->SetCurrentColliding((CollisionBitmask)(flag));//set the colliding with state
 	}
-	else
-		rigid_body_->SetCurrentColliding(NONE);//no collision
 }
 
 void Entity::Render(gef::Renderer3D * renderer)
@@ -76,12 +91,15 @@ void Entity::Render(gef::Renderer3D * renderer)
 
 void Entity::Reset()
 {
-	rigid_body_->SetPosition(spawn_point_);
 	SetHealth(health_cap_);
+	SetIndestructable(false);
+	indestructable_timer_ = 0;
+	rigid_body_->SetFilterMask(rigid_body_->GetCollisionMask());
+	rigid_body_->SetPosition(spawn_point_);
 }
 
 void Entity::Reset(gef::Vector4 spawn)
 {
 	SetSpawnPoint(spawn);
-	Reset();
+	Entity::Reset();
 }

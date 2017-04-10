@@ -7,8 +7,8 @@ Player::Player(gef::InputManager& inputManager)
 {
 	//rigidbody = _gameObject.GetComponent<Rigidbody2D>();
 	//meshRenderer = _gameObject.GetComponent<MeshRenderer>();
-
-	speed_ = 1;
+	
+	speed_ = 5;
 }
 
 void Player::Update(float deltaTime)
@@ -16,17 +16,82 @@ void Player::Update(float deltaTime)
 	Entity::Update(deltaTime);
 	CollisionCheck();
 
-	if (_inputManager.keyboard()->IsKeyDown(gef::Keyboard::KC_SPACE))
+	if (ammo_count == 0)
 	{
-		if (projectile_)
+		if (_inputManager.keyboard()->IsKeyPressed(gef::Keyboard::KC_SPACE))
 		{
 			projectile_->Fire();
+			ammo_count--;
 		}
 	}
-	else
-		projectile_->SetParentTransform(tranform_);
 
-	projectile_->Update(deltaTime);
+	for (int i = 0; i < ammo_cap; i++)
+	{
+		//if(i >= ammo_count)
+		projectile_->Update(deltaTime);
+
+		if (!projectile_->IsAlive())
+		{
+			projectile_->Reset();
+			projectile_->Reload();
+			ammo_count++;
+		}
+	}
+
+	switch (projectile_->GetRigidBody()->GetCurrentColliding())
+	{
+	case ENEMY:
+		score_ += 200;
+		projectile_->GetRigidBody()->ToggleMask(projectile_->GetRigidBody()->GetCollisionMask());
+		projectile_->GetRigidBody()->SetCurrentColliding(NONE);
+
+		break;
+	case ASTEROID:
+		score_ += 50;
+		projectile_->GetRigidBody()->ToggleMask(projectile_->GetRigidBody()->GetCollisionMask());
+		projectile_->GetRigidBody()->SetCurrentColliding(NONE);
+		break;
+	default:
+		break;
+	}
+	
+/*
+	if (ammo_count >= 0)
+	{
+		if (_inputManager.keyboard()->IsKeyDown(gef::Keyboard::KC_SPACE))
+		{
+			if (projectile_[ammo_count])
+			{
+				projectile_[ammo_count]->Fire();
+				ammo_count -= 1;
+			}
+		}
+		else
+			projectile_[ammo_count]->SetParentTransform(tranform_);
+	}
+
+	for (int i = ammo_count; i < ammo_cap; i++)
+	{
+		projectile_[i]->Update(deltaTime);
+		switch (projectile_[i]->GetRigidBody()->GetCurrentColliding())
+		{
+		case ENEMY:
+			score_ += 2;
+			projectile_[i]->GetRigidBody()->ToggleMask(ENEMY);
+
+			break;
+		case ASTEROID:
+			score_ += 1;
+			projectile_[i]->GetRigidBody()->ToggleMask(ASTEROID);
+			break;
+		default:
+			break;
+		}
+
+		projectile_[i]->Reset();
+
+
+	}*/
 
 	if (_inputManager.keyboard()->IsKeyDown(gef::Keyboard::KC_W))  //check player is in height bounds
 		rigid_body_->GetBody()->ApplyForceToCenter(b2Vec2(0, speed_ * deltaTime), true);	//allow y velocity
@@ -55,8 +120,7 @@ void Player::Update(float deltaTime)
 void Player::Render(gef::Renderer3D * renderer)
 {
 	Entity::Render(renderer);
-	if (projectile_ && IsAlive())
-		projectile_->Render(renderer);
+	projectile_->Render(renderer);
 }
 
 
@@ -88,7 +152,10 @@ void Player::CollisionCheck()
 
 void Player::SetProjectile(Projectile* projectile)
 {
+	
 	projectile_ = projectile;
+	projectile_->SetParentTransform(GetTransform());
+	
 }
 
 Player::~Player()

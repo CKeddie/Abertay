@@ -9,6 +9,7 @@ class Enemy :
 {
 public:
 	Enemy();
+	Enemy(gef::Vector4 spawn);
 	void Update(float gametime);
 	void CollisionCheck();
 	void SetDirection(gef::Vector4 target);
@@ -16,6 +17,7 @@ public:
 protected:
 	gef::Vector4 target_;
 	bool enabled = true;
-	b2Body* body;
+	float angle = -90;
+	float new_angle = -45, left_angle = -135, right_angle = -45;
 };
 

@@ -29,14 +29,16 @@ void RigidBody::Initialize(GameObject* gameObject, b2World * world, b2BodyType t
 	float y = sizeY;
 	shape.SetAsBox(x, y);
 
-	fixture.density = powf(sizeX + sizeY, 3);
+	fixture.density = 2;
 	fixture.shape = &shape;
-	fixture.filter.categoryBits = categoryMask;
-	fixture.filter.maskBits = bitmask;
 
+	_filterData.categoryBits = categoryMask;
+	_filterData.maskBits = bitmask;
+		
 	_body = world->CreateBody(&bodyDef);
 	_body->CreateFixture(&fixture);
 	_body->SetUserData(&category_);
+	_body->GetFixtureList()->SetFilterData(_filterData);
 }
 
 
@@ -55,3 +57,17 @@ void RigidBody::ApplyForce(float x, float y)
 	_body->ApplyForceToCenter(b2Vec2(x, y), true);
 }
 
+void RigidBody::ToggleMask(uint16 collisionType)
+{
+	uint16 flags = (uint16)bitmask_;
+	flags ^= collisionType;
+	CollisionBitmask bm = (CollisionBitmask)flags;
+	_filterData.maskBits  =  (CollisionBitmask)flags;
+	_body->GetFixtureList()->SetFilterData(_filterData);
+	_filterData.maskBits ^= (CollisionBitmask)collisionType;
+}
+
+void RigidBody::ResetMask()
+{
+	_body->GetFixtureList()->SetFilterData(_filterData);
+}

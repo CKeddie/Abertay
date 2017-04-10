@@ -24,7 +24,8 @@ public:
 	void SetProjectile(Projectile * projectile);
 protected:
 	gef::InputManager& _inputManager;
-	float current_angle_ = 0, new_angle = 0, left_angle_ = 25, right_angle_ = -25, initial_angle_ = 0;
+	float current_angle_ = 0, new_angle = 0, left_angle_ = 35, right_angle_ = -35, initial_angle_ = 0;
 	Projectile* projectile_;
+	int ammo_count = 0, ammo_cap = 1;
 };
 
