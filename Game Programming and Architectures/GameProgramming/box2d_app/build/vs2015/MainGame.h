@@ -50,10 +50,11 @@ protected:
 	gef::Vector4 player_start_ = gef::Vector4(0, -1, 0);
 	gef::Vector4 player_spawn_ = gef::Vector4(0, 0, 0);
 	gef::Vector4 player_transfer = gef::Vector4();
+
+	int score_ = 0;
 	float asteroid_spawn_timer_ = 0, asteroid_spawn_time = 3;
 	float enemy_spawn_timer_ = 0, enemy_spawn_time = 3;
 	float distance_ = 1.0f;
-	int score_ = 0;
 	float bounds_x = 8, bounds_y = 5;
 	bool tally_score = false;
 	bool game_over = false;
